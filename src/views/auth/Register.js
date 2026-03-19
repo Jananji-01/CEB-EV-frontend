@@ -14,7 +14,7 @@ export default function Register() {
   const [solarCapacity, setSolarCapacity] = useState("");
 
   const history = useHistory();
-  const baseUrl = process.env.REACT_APP_API_BASE_URL;
+  const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8088/EV";
 
   const validatePassword = (password) => {
     const strongPasswordRegex =
