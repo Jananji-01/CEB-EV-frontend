@@ -108,6 +108,9 @@ export default function Sidebar() {
                     Maps
                   </Link>
                 </li>
+                
+
+
                 <li className="items-center mb-2">
                   <Link
                     className={
@@ -527,6 +530,35 @@ export default function Sidebar() {
                     Billing History
                   </Link>
                 </li>
+
+ <li className="items-center mb-2">
+  <Link
+    className={
+      "text-sm py-3 " +
+      (window.location.href.indexOf("/admin/qr-generator") !== -1
+        ? ""
+        : "text-blueGray-700 hover:text-blueGray-500")
+    }
+    to="/admin/qr-generator"
+    style={
+      window.location.href.indexOf("/admin/qr-generator") !== -1
+        ? { color: "#b23200" }
+        : {}
+    }
+  >
+    <i
+      className={
+        "fas fa-qrcode mr-2 text-sm " +
+        (window.location.href.indexOf("/admin/qr-generator") !== -1
+          ? "opacity-75"
+          : "text-blueGray-300")
+      }
+    ></i>{" "}
+    QR Code Generator
+  </Link>
+</li>
+
+
               </ul>
             </div>
           </div>
