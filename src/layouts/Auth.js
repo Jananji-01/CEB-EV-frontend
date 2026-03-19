@@ -24,7 +24,7 @@ export default function Auth() {
           className="relative w-full h-full min-h-screen"
           style={{ height: "100vh" }}
         >
-          <div
+          {/* <div
             className="absolute top-0 w-full h-full bg-white bg-no-repeat bg-full"
             style={{
               backgroundImage: `url(${ceblogo})`,
@@ -32,7 +32,7 @@ export default function Auth() {
               opacity: 0.6,
               zIndex: -1,
             }}
-          ></div>
+          ></div> */}
           <Switch>
             <Route path="/auth/login" exact component={Login} />
             <Route path="/auth/otp" exact component={Otp} />

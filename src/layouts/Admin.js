@@ -22,6 +22,8 @@ import Payment from "views/admin/Payment";
 import EVOwnerDetails from "views/admin/EVOwnerDetails";
 import SolarOwnerDetails from "views/admin/SolarOwnerDetails";
 
+import QRGenerator from "views/admin/QRGenerator"; 
+
 export default function Admin() {
   return (
     <>
@@ -47,7 +49,7 @@ export default function Admin() {
             />
             <Route path="/admin/evowners" exact component={EVOwnerDetails} />
             <Route path="/admin/solarowners" exact component={SolarOwnerDetails} />
-
+            <Route path="/admin/qr-generator" exact component={QRGenerator} />
             <Redirect from="/admin" to="/admin/dashboard" />
             
 

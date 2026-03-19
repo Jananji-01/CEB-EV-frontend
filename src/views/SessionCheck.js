@@ -1,44 +1,3 @@
-// import { useEffect, useState } from "react";
-// import { useHistory } from "react-router-dom";
-
-// const SessionCheck = () => {
-//   const history = useHistory();
-//   const [sessionExpired, setSessionExpired] = useState(false);
-
-//   useEffect(() => {
-//     const checkSession = async () => {
-//       try {
-//         const response = await fetch("http://127.0.0.1:8088/EVProject-0.0.1-SNAPSHOT/api/v1/session", {
-//           method: "GET",
-//           headers: {
-//             "Content-Type": "application/json",
-//             Authorization: "Basic " + btoa("user:admin123"),
-//           },
-//           credentials: "include",
-//         });
-
-//         if (response.status === 401 && !sessionExpired) {
-//           setSessionExpired(true);
-//           alert("Session expired! Please log in again.");
-//           sessionStorage.clear(); // Clear stored session
-//           history.push("/auth/login");
-//         }
-//       } catch (error) {
-//         console.error("Session check failed:", error);
-//       }
-//     };
-
-//     // Check session every 30 seconds
-//     const interval = setInterval(checkSession, 30000);
-
-//     return () => clearInterval(interval); // Cleanup on unmount
-//   }, [history, sessionExpired]);
-
-//   return null;
-// };
-
-// export default SessionCheck;
-
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
@@ -90,3 +49,6 @@ const SessionCheck = () => {
 };
 
 export default SessionCheck;
+
+
+
