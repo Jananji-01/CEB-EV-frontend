@@ -108,9 +108,6 @@ export default function Sidebar() {
                     Maps
                   </Link>
                 </li>
-                
-
-
                 <li className="items-center mb-2">
                   <Link
                     className={
@@ -272,14 +269,14 @@ export default function Sidebar() {
                   <Link
                     className={
                       "text-sm py-3 " +
-                      (window.location.href.indexOf("/smartplug/register") !==
+                      (window.location.href.indexOf("/smartplug/charging") !==
                       -1
                         ? ""
                         : "text-blueGray-700 hover:text-blueGray-500")
                     }
-                    to="/smartplug/register"
+                    to="/smartplug/charging"
                     style={
-                      window.location.href.indexOf("/smartplug/register") !== -1
+                      window.location.href.indexOf("/smartplug/charging") !== -1
                         ? { color: "#b23200" }
                         : {}
                     }
@@ -287,7 +284,7 @@ export default function Sidebar() {
                     <i
                       className={
                         "fas fa-plug mr-3 text-sm " +
-                        (window.location.href.indexOf("/smartplug/register") !==
+                        (window.location.href.indexOf("/smartplug/charging") !==
                         -1
                           ? "opacity-75"
                           : "text-blueGray-300")
@@ -343,7 +340,7 @@ export default function Sidebar() {
             {/* Brand */}
             <Link
               className="inline-block p-4 px-0 mr-0 text-sm font-bold text-left uppercase md:block md:pb-2 text-blueGray-600 whitespace-nowrap"
-              to="/"
+              to="/admin/dashboard"
             >
               <div className="sticky flex items-center justify-center">
                 <img alt="ceb logo" className="w-20 h-20" src={ceb} />
@@ -503,6 +500,34 @@ export default function Sidebar() {
                   </Link>
                 </li>
 
+                {/* Smart Plug Monitoring */}
+                <li className="items-center mb-2">
+                  <Link
+                    className={
+                      "text-sm py-3 " +
+                      (window.location.href.indexOf("/admin/smartplugs") !== -1
+                        ? ""
+                        : "text-blueGray-700 hover:text-blueGray-500")
+                    }
+                    to="/admin/smartplugs"
+                    style={
+                      window.location.href.indexOf("/admin/smartplugs") !== -1
+                        ? { color: "#b23200" }
+                        : {}
+                    }
+                  >
+                    <i
+                      className={
+                        "fas fa-plug mr-2 text-sm " +
+                        (window.location.href.indexOf("/admin/smartplugs") !== -1
+                          ? "opacity-75"
+                          : "text-blueGray-300")
+                      }
+                    ></i>{" "}
+                    Smart Plug Monitoring
+                  </Link>
+                </li>
+
                 {/* History (optional but good) */}
                 <li className="items-center">
                   <Link
@@ -530,35 +555,6 @@ export default function Sidebar() {
                     Billing History
                   </Link>
                 </li>
-
- <li className="items-center mb-2">
-  <Link
-    className={
-      "text-sm py-3 " +
-      (window.location.href.indexOf("/admin/qr-generator") !== -1
-        ? ""
-        : "text-blueGray-700 hover:text-blueGray-500")
-    }
-    to="/admin/qr-generator"
-    style={
-      window.location.href.indexOf("/admin/qr-generator") !== -1
-        ? { color: "#b23200" }
-        : {}
-    }
-  >
-    <i
-      className={
-        "fas fa-qrcode mr-2 text-sm " +
-        (window.location.href.indexOf("/admin/qr-generator") !== -1
-          ? "opacity-75"
-          : "text-blueGray-300")
-      }
-    ></i>{" "}
-    QR Code Generator
-  </Link>
-</li>
-
-
               </ul>
             </div>
           </div>

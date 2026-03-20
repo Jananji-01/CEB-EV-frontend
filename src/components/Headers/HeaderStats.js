@@ -4,7 +4,7 @@ import CardStats from "components/Cards/CardStats.js";
 
 export default function HeaderStats() {
   const location = useLocation();
-  const isSmartPlugPage = location.pathname === "/smartplug/register";
+  const isSmartPlugPage = location.pathname === "/smartplug/register" || location.pathname === "/smartplug/charging";
 
   // ✅ check role
   const userLevel = sessionStorage.getItem("userLevel");
@@ -13,6 +13,7 @@ export default function HeaderStats() {
   const [totalSessions, setTotalSessions] = useState(0);
   const [totalConsumption, setTotalConsumption] = useState("0.000");
   const [totalDuration, setTotalDuration] = useState("00:00");
+  const [totalExpense, setTotalExpense] = useState("N/A");
 
   useEffect(() => {
     // ✅ admin no need to call monthly api
@@ -50,6 +51,7 @@ export default function HeaderStats() {
         setTotalDuration(
           `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`
         );
+        setTotalExpense(data.totalAmount !== undefined ? Number(data.totalAmount).toFixed(2) : "N/A");
       })
       .catch((err) => {
         console.error("Monthly API error", err);
@@ -104,7 +106,7 @@ export default function HeaderStats() {
             <div className="w-full px-4 lg:w-6/12 xl:w-3/12">
               <CardStats
                 statSubtitle="Total Expense"
-                statTitle="N/A"
+                statTitle={totalExpense}
                 statIconName="fas fa-percent"
                 statIconColor="bg-orange-500"
                 statBgColor="#b80f"
