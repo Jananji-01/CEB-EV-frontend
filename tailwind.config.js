@@ -15,7 +15,12 @@ module.exports = {
       "./public/*.js",
     ],
     options: {
-      safelist: [],
+      safelist: [
+        'from-crimson',
+        'to-crimson-dark',
+        'bg-crimson',
+        'bg-crimson-dark',
+      ],
     },
   },
   theme: {
@@ -23,6 +28,10 @@ module.exports = {
       ...colors,
     },
     extend: {
+      colors: {
+        crimson: '#7c0000',
+        'crimson-dark': '#a00000',
+      },
       minHeight: {
         "screen-75": "75vh",
       },

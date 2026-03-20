@@ -21,8 +21,7 @@ import DashboardSOLAR from "views/admin/DashboardSOLAR";
 import Payment from "views/admin/Payment";
 import EVOwnerDetails from "views/admin/EVOwnerDetails";
 import SolarOwnerDetails from "views/admin/SolarOwnerDetails";
-
-import QRGenerator from "views/admin/QRGenerator"; 
+import SmartPlugMonitor from "views/admin/SmartPlugMonitor.js";
 
 export default function Admin() {
   return (
@@ -42,14 +41,11 @@ export default function Admin() {
             <Route path="/admin/tables" exact component={Tables} />
             <Route path="/admin/evdashboard" exact component={EvDashboard} />
             <Route path="/admin/payment" exact component={Payment} />
-            <Route
-              path="/admin/dashboardsolar"
-              exact
-              component={DashboardSOLAR}
-            />
+            <Route path="/admin/dashboardsolar" exact component={DashboardSOLAR}/>
             <Route path="/admin/evowners" exact component={EVOwnerDetails} />
             <Route path="/admin/solarowners" exact component={SolarOwnerDetails} />
-            <Route path="/admin/qr-generator" exact component={QRGenerator} />
+            <Route path="/admin/smartplugs" exact component={SmartPlugMonitor} />
+
             <Redirect from="/admin" to="/admin/dashboard" />
             
 
