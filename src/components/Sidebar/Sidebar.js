@@ -343,7 +343,7 @@ export default function Sidebar() {
             {/* Brand */}
             <Link
               className="inline-block p-4 px-0 mr-0 text-sm font-bold text-left uppercase md:block md:pb-2 text-blueGray-600 whitespace-nowrap"
-              to="/admin/dashboard"
+              to="/"
             >
               <div className="sticky flex items-center justify-center">
                 <img alt="ceb logo" className="w-20 h-20" src={ceb} />

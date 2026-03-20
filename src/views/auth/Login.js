@@ -167,7 +167,7 @@ export default function Login() {
                     >
                     {/* Information Technology Branch Ceylon Electricity Board */}
                       Utility Solutions & Automation Branch, EDL.<br /> 
-                      All Rights Reserved  Version 1.0.3
+                      All Rights Reserved  Version 1.0.0
                     </a>
                 </div>
                 </form>
