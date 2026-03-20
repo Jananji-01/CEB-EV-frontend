@@ -159,17 +159,6 @@ export default function Login() {
                       Sign In
                     </button>
                   </div>
-                  <div className="text-xs text-blueGray-500 font-semibold py-1 text-center">
-                    © {new Date().getFullYear()}{" "}
-                    <a
-                    // href="https://www.creative-tim.com?ref=nr-footer-admin"
-                      className="text-blueGray-500 hover:text-blueGray-700 text-xs font-semibold py-1"
-                    >
-                    {/* Information Technology Branch Ceylon Electricity Board */}
-                      Utility Solutions & Automation Branch, EDL.<br /> 
-                      All Rights Reserved  Version 1.0.0
-                    </a>
-                </div>
                 </form>
               </div>
             </div>
