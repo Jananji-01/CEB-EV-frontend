@@ -6,561 +6,238 @@ import ceb from "../../assets/img/ceb.png";
 import NotificationDropdown from "components/Dropdowns/NotificationDropdown.js";
 import UserDropdown from "components/Dropdowns/UserDropdown.js";
 
+const sidebarStyle = {
+  background: "linear-gradient(180deg, #1a0000 0%, #2d0000 50%, #1a0000 100%)",
+  borderRight: "1px solid rgba(255,255,255,0.06)",
+};
+
+const logoRingStyle = {
+  width: "72px",
+  height: "72px",
+  borderRadius: "50%",
+  padding: "3px",
+  background: "linear-gradient(135deg, #7c0000, #c0392b)",
+  boxShadow: "0 4px 16px rgba(124,0,0,0.5)",
+  margin: "0 auto",
+};
+
+const logoInnerStyle = {
+  width: "100%",
+  height: "100%",
+  borderRadius: "50%",
+  background: "#fff",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  overflow: "hidden",
+};
+
+const dividerStyle = {
+  height: "1px",
+  background: "rgba(255,255,255,0.08)",
+  margin: "16px 0",
+};
+
+function NavItem({ to, icon, label, active }) {
+  return (
+    <li style={{ marginBottom: "4px" }}>
+      <Link
+        to={to}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          padding: "10px 16px",
+          borderRadius: "10px",
+          fontSize: "13px",
+          fontWeight: active ? "600" : "400",
+          color: active ? "#fff" : "rgba(255,255,255,0.55)",
+          background: active
+            ? "linear-gradient(135deg, rgba(124,0,0,0.8), rgba(160,0,0,0.6))"
+            : "transparent",
+          boxShadow: active ? "0 4px 12px rgba(124,0,0,0.4)" : "none",
+          borderLeft: active ? "3px solid #ff6b6b" : "3px solid transparent",
+          transition: "all 0.2s",
+          textDecoration: "none",
+        }}
+        onMouseEnter={(e) => {
+          if (!active) {
+            e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+            e.currentTarget.style.color = "rgba(255,255,255,0.85)";
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (!active) {
+            e.currentTarget.style.background = "transparent";
+            e.currentTarget.style.color = "rgba(255,255,255,0.55)";
+          }
+        }}
+      >
+        <span
+          style={{
+            width: "32px",
+            height: "32px",
+            borderRadius: "8px",
+            background: active ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.05)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+          }}
+        >
+          <i className={`${icon} text-sm`} style={{ color: active ? "#fff" : "rgba(255,255,255,0.45)" }}></i>
+        </span>
+        <span>{label}</span>
+      </Link>
+    </li>
+  );
+}
+
+function SectionLabel({ children }) {
+  return (
+    <li>
+      <span
+        style={{
+          display: "block",
+          fontSize: "10px",
+          fontWeight: "700",
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
+          color: "rgba(255,255,255,0.25)",
+          padding: "8px 16px 6px",
+          marginTop: "8px",
+        }}
+      >
+        {children}
+      </span>
+    </li>
+  );
+}
+
 export default function Sidebar() {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
   const userLevel = sessionStorage.getItem("userLevel");
+  const href = window.location.href;
 
-  return (
-    <>
-      {userLevel === "ROLE_SOLAROWNER" && (
-        <nav className="relative z-10 flex flex-wrap items-center justify-between px-6 py-4 bg-white shadow-xl md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden md:w-64">
-          <div className="flex flex-wrap items-center justify-between w-full px-0 mx-auto md:flex-col md:items-stretch md:min-h-full md:flex-nowrap">
-            {/* Toggler */}
-            <button
-              className="px-3 py-1 text-xl leading-none text-black bg-transparent border border-transparent border-solid rounded opacity-50 cursor-pointer md:hidden"
-              type="button"
-              onClick={() => setCollapseShow("bg-white m-2 py-3 px-6")}
-            >
-              <i className="fas fa-bars"></i>
-            </button>
-            {/* Brand */}
-            <Link
-              className="inline-block p-4 px-0 mr-0 text-sm font-bold text-left uppercase md:block md:pb-2 text-blueGray-600 whitespace-nowrap"
-              to="/"
-            >
-              <div className="sticky flex items-center justify-center">
-                <img alt="ceb logo" className="w-20 h-20" src={ceb} />
-              </div>
-            </Link>
-            {/* User */}
-            <ul className="flex flex-wrap items-center list-none md:hidden">
-              <li className="relative inline-block">
-                <NotificationDropdown />
-              </li>
-              <li className="relative inline-block">
-                <UserDropdown />
-              </li>
-            </ul>
-            {/* Collapse */}
-            <div
-              className={
-                "md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded " +
-                collapseShow
-              }
-            >
-              {/* Collapse header */}
-              <div className="block pb-4 mb-4 border-b border-solid md:min-w-full md:hidden border-blueGray-200">
-                <div className="flex flex-wrap">
-                  <div className="w-6/12">
-                    <Link
-                      className="inline-block p-4 px-0 mr-0 text-sm font-bold text-left uppercase md:block md:pb-2 text-blueGray-600 whitespace-nowrap"
-                      to="/"
-                    >
-                      Notus React
-                    </Link>
-                  </div>
-                  <div className="flex justify-end w-6/12">
-                    <button
-                      type="button"
-                      className="px-3 py-1 text-xl leading-none text-black bg-transparent border border-transparent border-solid rounded opacity-50 cursor-pointer md:hidden"
-                      onClick={() => setCollapseShow("hidden")}
-                    >
-                      <i className="fas fa-times"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              {/* Form */}
-              <form className="mt-6 mb-4 md:hidden">
-                <div className="pt-0 mb-3">
-                  <input
-                    type="text"
-                    placeholder="Search"
-                    className="w-full h-12 px-3 py-2 text-base font-normal leading-snug bg-white border border-0 border-solid rounded shadow-none outline-none border-blueGray-500 placeholder-blueGray-300 text-blueGray-600 focus:outline-none"
-                  />
-                </div>
-              </form>
+  const isActive = (path) => href.indexOf(path) !== -1;
 
-              <ul className="flex flex-col list-none md:flex-col md:min-w-full">
-                <li className="items-center mb-2">
-                  <Link
-                    className={
-                      "text-sm py-3 " +
-                      (window.location.href.indexOf("/admin/maps") !== -1
-                        ? ""
-                        : "text-blueGray-700 hover:text-blueGray-500")
-                    }
-                    to="/admin/maps"
-                    style={
-                      window.location.href.indexOf("/admin/maps") !== -1
-                        ? { color: "#b23200" }
-                        : {}
-                    }
-                  >
-                    <i
-                      className={
-                        "fas fa-map-marked mr-2 text-sm " +
-                        (window.location.href.indexOf("/admin/maps") !== -1
-                          ? "opacity-75"
-                          : "text-blueGray-300")
-                      }
-                    ></i>{" "}
-                    Maps
-                  </Link>
-                </li>
-                <li className="items-center mb-2">
-                  <Link
-                    className={
-                      "text-sm py-3 " +
-                      (window.location.href.indexOf("/smartplug/register") !==
-                      -1
-                        ? ""
-                        : "text-blueGray-700 hover:text-blueGray-500")
-                    }
-                    to="/smartplug/register"
-                    style={
-                      window.location.href.indexOf("/smartplug/register") !== -1
-                        ? { color: "#b23200" }
-                        : {}
-                    }
-                  >
-                    <i
-                      className={
-                        "fas fa-plug mr-3 text-sm " +
-                        (window.location.href.indexOf("/smartplug/register") !==
-                        -1
-                          ? "opacity-75"
-                          : "text-blueGray-300")
-                      }
-                    ></i>{" "}
-                    Smart Plug Registration
-                  </Link>
-                </li>
+  const NavContent = ({ children }) => (
+    <nav
+      style={{
+        ...sidebarStyle,
+        position: "fixed",
+        top: 0,
+        bottom: 0,
+        left: 0,
+        width: "256px",
+        zIndex: 10,
+        overflowY: "auto",
+        display: "flex",
+        flexDirection: "column",
+      }}
+      className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl"
+    >
+      <div className="flex flex-wrap items-center justify-between w-full px-0 mx-auto md:flex-col md:items-stretch md:min-h-full md:flex-nowrap" style={{ padding: "0 16px" }}>
+        {/* Mobile toggler */}
+        <button
+          className="px-3 py-1 text-xl leading-none bg-transparent border border-transparent rounded cursor-pointer md:hidden"
+          style={{ color: "rgba(255,255,255,0.7)" }}
+          type="button"
+          onClick={() => setCollapseShow("bg-transparent m-2 py-3 px-6")}
+        >
+          <i className="fas fa-bars"></i>
+        </button>
 
-                <li className="items-center">
-                  <Link
-                    className={
-                      "text-sm py-3 " +
-                      (window.location.href.indexOf("/admin/payment") !== -1
-                        ? ""
-                        : "text-blueGray-700 hover:text-blueGray-500")
-                    }
-                    to="/admin/payment"
-                    style={
-                      window.location.href.indexOf("/smartplug/qrscan") !== -1
-                        ? { color: "#b23200" }
-                        : {}
-                    }
-                  >
-                    <i
-                      className={
-                        "fas fa-qrcode mr-2 text-sm " +
-                        (window.location.href.indexOf("/smartplug/qrscan") !==
-                        -1
-                          ? "opacity-75"
-                          : "text-blueGray-300")
-                      }
-                    ></i>{" "}
-                    QR Scan
-                  </Link>
-                </li>
-              </ul>
+        {/* Logo */}
+        <Link to="/" style={{ display: "block", padding: "28px 0 20px", textDecoration: "none" }}>
+          <div style={logoRingStyle}>
+            <div style={logoInnerStyle}>
+              <img alt="ceb logo" src={ceb} style={{ width: "60px", height: "60px", objectFit: "contain" }} />
             </div>
           </div>
-        </nav>
-      )}
-      {userLevel === "ROLE_EVOWNER" && (
-        <nav className="relative z-10 flex flex-wrap items-center justify-between px-6 py-4 bg-white shadow-xl md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden md:w-64">
-          <div className="flex flex-wrap items-center justify-between w-full px-0 mx-auto md:flex-col md:items-stretch md:min-h-full md:flex-nowrap">
-            {/* Toggler */}
-            <button
-              className="px-3 py-1 text-xl leading-none text-black bg-transparent border border-transparent border-solid rounded opacity-50 cursor-pointer md:hidden"
-              type="button"
-              onClick={() => setCollapseShow("bg-white m-2 py-3 px-6")}
-            >
-              <i className="fas fa-bars"></i>
-            </button>
-            {/* Brand */}
-            <Link
-              className="inline-block p-4 px-0 mr-0 text-sm font-bold text-left uppercase md:block md:pb-2 text-blueGray-600 whitespace-nowrap"
-              to="/"
-            >
-              <div className="sticky flex items-center justify-center">
-                <img alt="ceb logo" className="w-20 h-20" src={ceb} />
-              </div>
-            </Link>
-            {/* User */}
-            <ul className="flex flex-wrap items-center list-none md:hidden">
-              <li className="relative inline-block">
-                <NotificationDropdown />
-              </li>
-              <li className="relative inline-block">
-                <UserDropdown />
-              </li>
-            </ul>
-            {/* Collapse */}
-            <div
-              className={
-                "md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded " +
-                collapseShow
-              }
-            >
-              {/* Collapse header */}
-              <div className="block pb-4 mb-4 border-b border-solid md:min-w-full md:hidden border-blueGray-200">
-                <div className="flex flex-wrap">
-                  <div className="w-6/12">
-                    <Link
-                      className="inline-block p-4 px-0 mr-0 text-sm font-bold text-left uppercase md:block md:pb-2 text-blueGray-600 whitespace-nowrap"
-                      to="/"
-                    >
-                      Notus React
-                    </Link>
-                  </div>
-                  <div className="flex justify-end w-6/12">
-                    <button
-                      type="button"
-                      className="px-3 py-1 text-xl leading-none text-black bg-transparent border border-transparent border-solid rounded opacity-50 cursor-pointer md:hidden"
-                      onClick={() => setCollapseShow("hidden")}
-                    >
-                      <i className="fas fa-times"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              {/* Form */}
-              <form className="mt-6 mb-4 md:hidden">
-                <div className="pt-0 mb-3">
-                  <input
-                    type="text"
-                    placeholder="Search"
-                    className="w-full h-12 px-3 py-2 text-base font-normal leading-snug bg-white border border-0 border-solid rounded shadow-none outline-none border-blueGray-500 placeholder-blueGray-300 text-blueGray-600 focus:outline-none"
-                  />
-                </div>
-              </form>
+          <div style={{ textAlign: "center", marginTop: "10px" }}>
+            <span style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "0.1em", color: "rgba(255,255,255,0.5)", textTransform: "uppercase" }}>
+              EV Management
+            </span>
+          </div>
+        </Link>
 
-              <ul className="flex flex-col list-none md:flex-col md:min-w-full">
-                <li className="items-center mb-2">
-                  <Link
-                    className={
-                      "text-sm py-3 " +
-                      (window.location.href.indexOf("/admin/maps") !== -1
-                        ? ""
-                        : "text-blueGray-700 hover:text-blueGray-500")
-                    }
-                    to="/admin/maps"
-                    style={
-                      window.location.href.indexOf("/admin/maps") !== -1
-                        ? { color: "#b23200" }
-                        : {}
-                    }
-                  >
-                    <i
-                      className={
-                        "fas fa-map-marked mr-2 text-sm " +
-                        (window.location.href.indexOf("/admin/maps") !== -1
-                          ? "opacity-75"
-                          : "text-blueGray-300")
-                      }
-                    ></i>{" "}
-                    Maps
-                  </Link>
-                </li>
-                <li className="items-center mb-2">
-                  <Link
-                    className={
-                      "text-sm py-3 " +
-                      (window.location.href.indexOf("/smartplug/charging") !==
-                      -1
-                        ? ""
-                        : "text-blueGray-700 hover:text-blueGray-500")
-                    }
-                    to="/smartplug/charging"
-                    style={
-                      window.location.href.indexOf("/smartplug/charging") !== -1
-                        ? { color: "#b23200" }
-                        : {}
-                    }
-                  >
-                    <i
-                      className={
-                        "fas fa-plug mr-3 text-sm " +
-                        (window.location.href.indexOf("/smartplug/charging") !==
-                        -1
-                          ? "opacity-75"
-                          : "text-blueGray-300")
-                      }
-                    ></i>{" "}
-                    Charging EV
-                  </Link>
-                </li>
+        <div style={dividerStyle} />
 
-                <li className="items-center">
-                  <Link
-                    className={
-                      "text-sm py-3 " +
-                      (window.location.href.indexOf("/admin/payment") !== -1
-                        ? ""
-                        : "text-blueGray-700 hover:text-blueGray-500")
-                    }
-                    to="/admin/payment"
-                    style={
-                      window.location.href.indexOf("/admin/payment") !== -1
-                        ? { color: "#b23200" }
-                        : {}
-                    }
-                  >
-                    <i
-                      className={
-                        "fas fa-credit-card mr-2 text-sm " +
-                        (window.location.href.indexOf("/admin/payment") !== -1
-                          ? "opacity-75"
-                          : "text-blueGray-300")
-                      }
-                    ></i>{" "}
-                    Payments
-                  </Link>
-                </li>
-              </ul>
+        {/* Mobile user icons */}
+        <ul className="flex flex-wrap items-center list-none md:hidden">
+          <li className="relative inline-block"><NotificationDropdown /></li>
+          <li className="relative inline-block"><UserDropdown /></li>
+        </ul>
+
+        {/* Nav collapse */}
+        <div className={`md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded ${collapseShow === "hidden" ? "hidden md:flex" : collapseShow}`}>
+          {/* Mobile close */}
+          <div className="block pb-4 mb-4 border-b border-solid md:min-w-full md:hidden" style={{ borderColor: "rgba(255,255,255,0.1)" }}>
+            <div className="flex justify-end">
+              <button
+                type="button"
+                className="px-3 py-1 text-xl leading-none bg-transparent border border-transparent rounded cursor-pointer md:hidden"
+                style={{ color: "rgba(255,255,255,0.7)" }}
+                onClick={() => setCollapseShow("hidden")}
+              >
+                <i className="fas fa-times"></i>
+              </button>
             </div>
           </div>
-        </nav>
-      )}
-      {userLevel === "ROLE_ADMIN" && (
-        <nav className="relative z-10 flex flex-wrap items-center justify-between px-6 py-4 bg-white shadow-xl md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden md:w-64">
-          <div className="flex flex-wrap items-center justify-between w-full px-0 mx-auto md:flex-col md:items-stretch md:min-h-full md:flex-nowrap">
-            {/* Toggler */}
-            <button
-              className="px-3 py-1 text-xl leading-none text-black bg-transparent border border-transparent border-solid rounded opacity-50 cursor-pointer md:hidden"
-              type="button"
-              onClick={() => setCollapseShow("bg-white m-2 py-3 px-6")}
-            >
-              <i className="fas fa-bars"></i>
-            </button>
-
-            {/* Brand */}
-            <Link
-              className="inline-block p-4 px-0 mr-0 text-sm font-bold text-left uppercase md:block md:pb-2 text-blueGray-600 whitespace-nowrap"
-              to="/admin/dashboard"
-            >
-              <div className="sticky flex items-center justify-center">
-                <img alt="ceb logo" className="w-20 h-20" src={ceb} />
-              </div>
-            </Link>
-
-            {/* User (mobile only) */}
-            <ul className="flex flex-wrap items-center list-none md:hidden">
-              <li className="relative inline-block">
-                <NotificationDropdown />
-              </li>
-              <li className="relative inline-block">
-                <UserDropdown />
-              </li>
-            </ul>
-
-            {/* Collapse */}
-            <div
-              className={
-                "md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded " +
-                collapseShow
-              }
-            >
-              {/* Collapse header (mobile) */}
-              <div className="block pb-4 mb-4 border-b border-solid md:min-w-full md:hidden border-blueGray-200">
-                <div className="flex flex-wrap">
-                  <div className="w-6/12">
-                    <Link
-                      className="inline-block p-4 px-0 mr-0 text-sm font-bold text-left uppercase md:block md:pb-2 text-blueGray-600 whitespace-nowrap"
-                      to="/admin/dashboard"
-                    >
-                      CEB Admin
-                    </Link>
-                  </div>
-                  <div className="flex justify-end w-6/12">
-                    <button
-                      type="button"
-                      className="px-3 py-1 text-xl leading-none text-black bg-transparent border border-transparent border-solid rounded opacity-50 cursor-pointer md:hidden"
-                      onClick={() => setCollapseShow("hidden")}
-                    >
-                      <i className="fas fa-times"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <ul className="flex flex-col list-none md:flex-col md:min-w-full">
-                {/* Admin Dashboard */}
-                <li className="items-center mb-2">
-                  <Link
-                    className={
-                      "text-sm py-3 " +
-                      (window.location.href.indexOf("/admin/dashboard") !== -1
-                        ? ""
-                        : "text-blueGray-700 hover:text-blueGray-500")
-                    }
-                    to="/admin/dashboard"
-                    style={
-                      window.location.href.indexOf("/admin/dashboard") !== -1
-                        ? { color: "#b23200" }
-                        : {}
-                    }
-                  >
-                    <i
-                      className={
-                        "fas fa-chart-line mr-2 text-sm " +
-                        (window.location.href.indexOf("/admin/dashboard") !== -1
-                          ? "opacity-75"
-                          : "text-blueGray-300")
-                      }
-                    ></i>{" "}
-                    Admin Dashboard
-                  </Link>
-                </li>
-
-                {/* EV Owner Details */}
-                <li className="items-center mb-2">
-                  <Link
-                    className={
-                      "text-sm py-3 " +
-                      (window.location.href.indexOf("/admin/evowners") !== -1
-                        ? ""
-                        : "text-blueGray-700 hover:text-blueGray-500")
-                    }
-                    to="/admin/evowners"
-                    style={
-                      window.location.href.indexOf("/admin/evowners") !== -1
-                        ? { color: "#b23200" }
-                        : {}
-                    }
-                  >
-                    <i
-                      className={
-                        "fas fa-car mr-2 text-sm " +
-                        (window.location.href.indexOf("/admin/evowners") !== -1
-                          ? "opacity-75"
-                          : "text-blueGray-300")
-                      }
-                    ></i>{" "}
-                    EV Owner Details
-                  </Link>
-                </li>
-
-                {/* Solar Owner Details */}
-                <li className="items-center mb-2">
-                  <Link
-                    className={
-                      "text-sm py-3 " +
-                      (window.location.href.indexOf("/admin/solarowners") !== -1
-                        ? ""
-                        : "text-blueGray-700 hover:text-blueGray-500")
-                    }
-                    to="/admin/solarowners"
-                    style={
-                      window.location.href.indexOf("/admin/solarowners") !== -1
-                        ? { color: "#b23200" }
-                        : {}
-                    }
-                  >
-                    <i
-                      className={
-                        "fas fa-solar-panel mr-2 text-sm " +
-                        (window.location.href.indexOf("/admin/solarowners") !== -1
-                          ? "opacity-75"
-                          : "text-blueGray-300")
-                      }
-                    ></i>{" "}
-                    Solar Owner Details
-                  </Link>
-                </li>
-
-                {/* Smart Plug Registration */}
-                <li className="items-center mb-2">
-                  <Link
-                    className={
-                      "text-sm py-3 " +
-                      (window.location.href.indexOf("/smartplug/register") !== -1
-                        ? ""
-                        : "text-blueGray-700 hover:text-blueGray-500")
-                    }
-                    to="/smartplug/register"
-                    style={
-                      window.location.href.indexOf("/smartplug/register") !== -1
-                        ? { color: "#b23200" }
-                        : {}
-                    }
-                  >
-                    <i
-                      className={
-                        "fas fa-plug mr-2 text-sm " +
-                        (window.location.href.indexOf("/smartplug/register") !== -1
-                          ? "opacity-75"
-                          : "text-blueGray-300")
-                      }
-                    ></i>{" "}
-                    Smart Plug Registration
-                  </Link>
-                </li>
-
-                {/* Smart Plug Monitoring */}
-                <li className="items-center mb-2">
-                  <Link
-                    className={
-                      "text-sm py-3 " +
-                      (window.location.href.indexOf("/admin/smartplugs") !== -1
-                        ? ""
-                        : "text-blueGray-700 hover:text-blueGray-500")
-                    }
-                    to="/admin/smartplugs"
-                    style={
-                      window.location.href.indexOf("/admin/smartplugs") !== -1
-                        ? { color: "#b23200" }
-                        : {}
-                    }
-                  >
-                    <i
-                      className={
-                        "fas fa-plug mr-2 text-sm " +
-                        (window.location.href.indexOf("/admin/smartplugs") !== -1
-                          ? "opacity-75"
-                          : "text-blueGray-300")
-                      }
-                    ></i>{" "}
-                    Smart Plug Monitoring
-                  </Link>
-                </li>
-
-                {/* History (optional but good) */}
-                <li className="items-center">
-                  <Link
-                    className={
-                      "text-sm py-3 " +
-                      (window.location.href.indexOf("/admin/billing-history") !== -1
-                        ? ""
-                        : "text-blueGray-700 hover:text-blueGray-500")
-                    }
-                    to="/admin/billing-history"
-                    style={
-                      window.location.href.indexOf("/admin/billing-history") !== -1
-                        ? { color: "#b23200" }
-                        : {}
-                    }
-                  >
-                    <i
-                      className={
-                        "fas fa-history mr-2 text-sm " +
-                        (window.location.href.indexOf("/admin/billing-history") !== -1
-                          ? "opacity-75"
-                          : "text-blueGray-300")
-                      }
-                    ></i>{" "}
-                    Billing History
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-      )}
-
-    </>
+          {children}
+        </div>
+      </div>
+    </nav>
   );
+
+  if (userLevel === "ROLE_EVOWNER") {
+    return (
+      <NavContent>
+        <ul className="flex flex-col list-none md:flex-col md:min-w-full">
+          <SectionLabel>Navigation</SectionLabel>
+          <NavItem to="/admin/evdashboard" icon="fas fa-tachometer-alt" label="Dashboard" active={isActive("/admin/evdashboard")} />
+          <NavItem to="/admin/maps" icon="fas fa-map-marked-alt" label="Charging Map" active={isActive("/admin/maps")} />
+          <SectionLabel>Charging</SectionLabel>
+          <NavItem to="/smartplug/charging" icon="fas fa-bolt" label="Charging EV" active={isActive("/smartplug/charging")} />
+          <NavItem to="/admin/payment" icon="fas fa-credit-card" label="Payments" active={isActive("/admin/payment")} />
+        </ul>
+      </NavContent>
+    );
+  }
+
+  if (userLevel === "ROLE_SOLAROWNER") {
+    return (
+      <NavContent>
+        <ul className="flex flex-col list-none md:flex-col md:min-w-full">
+          <SectionLabel>Navigation</SectionLabel>
+          <NavItem to="/admin/maps" icon="fas fa-map-marked-alt" label="Maps" active={isActive("/admin/maps")} />
+          <SectionLabel>SmartPlug</SectionLabel>
+          <NavItem to="/smartplug/register" icon="fas fa-plug" label="Smart Plug Registration" active={isActive("/smartplug/register")} />
+          <NavItem to="/admin/payment" icon="fas fa-credit-card" label="Payments" active={isActive("/admin/payment")} />
+        </ul>
+      </NavContent>
+    );
+  }
+
+  if (userLevel === "ROLE_ADMIN") {
+    return (
+      <NavContent>
+        <ul className="flex flex-col list-none md:flex-col md:min-w-full">
+          <SectionLabel>Overview</SectionLabel>
+          <NavItem to="/admin/dashboard" icon="fas fa-chart-line" label="Admin Dashboard" active={isActive("/admin/dashboard")} />
+          <SectionLabel>Users</SectionLabel>
+          <NavItem to="/admin/evowners" icon="fas fa-car" label="EV Owner Details" active={isActive("/admin/evowners")} />
+          <NavItem to="/admin/solarowners" icon="fas fa-solar-panel" label="Solar Owner Details" active={isActive("/admin/solarowners")} />
+          <SectionLabel>Devices</SectionLabel>
+          <NavItem to="/smartplug/register" icon="fas fa-plug" label="Smart Plug Registration" active={isActive("/smartplug/register")} />
+          <NavItem to="/admin/smartplugs" icon="fas fa-network-wired" label="Smart Plug Monitoring" active={isActive("/admin/smartplugs")} />
+          <SectionLabel>Finance</SectionLabel>
+          <NavItem to="/admin/billing-history" icon="fas fa-history" label="Billing History" active={isActive("/admin/billing-history")} />
+        </ul>
+      </NavContent>
+    );
+  }
+
+  return null;
 }
