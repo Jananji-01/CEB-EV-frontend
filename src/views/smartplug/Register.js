@@ -33,7 +33,7 @@ const RegisterSmartPlug = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${baseUrl}/api/smart-plugs/register`, {
+      const response = await fetch(`${baseUrl}/api/smart-plugs`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
