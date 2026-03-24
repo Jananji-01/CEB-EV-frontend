@@ -37,7 +37,7 @@ export default function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, otp }), // send OTP in request body
+        body: JSON.stringify({ username, otp }), 
       });
 
       const contentType = response.headers.get("content-type");
