@@ -1,7 +1,7 @@
 /*eslint-disable*/
 import React from "react";
 import { Link } from "react-router-dom";
-import ceb from "../../assets/img/ceb.png";
+import EDL from "../../assets/img/EDL.jpeg";
 
 import NotificationDropdown from "components/Dropdowns/NotificationDropdown.js";
 import UserDropdown from "components/Dropdowns/UserDropdown.js";
@@ -85,19 +85,20 @@ export default function Sidebar() {
     { to: "/admin/evdashboard", icon: "fas fa-tachometer-alt", label: "Dashboard" },
     { to: "/admin/maps",        icon: "fas fa-map-marked-alt", label: "Charging Map" },
     { to: "/smartplug/charging",icon: "fas fa-bolt",           label: "Charging EV" },
-    { to: "/admin/payment",     icon: "fas fa-credit-card",    label: "Payments" },
+    // { to: "/admin/payment",     icon: "fas fa-credit-card",    label: "Payments" },
   ];
 
   const solarOwnerLinks = [
     { to: "/admin/maps",          icon: "fas fa-map-marked-alt", label: "Maps" },
-    { to: "/smartplug/register",  icon: "fas fa-plug",           label: "Smart Plug Registration" },
-    { to: "/admin/payment",       icon: "fas fa-credit-card",    label: "Payments" },
+    { to: "/smartplug/charging",icon: "fas fa-bolt",           label: "Charging EV" },
+    // { to: "/smartplug/register",  icon: "fas fa-plug",           label: "Smart Plug Registration" },
+    // { to: "/admin/payment",       icon: "fas fa-credit-card",    label: "Payments" },
   ];
 
   const adminLinks = [
     { to: "/admin/dashboard",      icon: "fas fa-chart-line",    label: "Admin Dashboard" },
     { to: "/admin/evowners",       icon: "fas fa-car",           label: "EV Owner Details" },
-    { to: "/admin/solarowners",    icon: "fas fa-solar-panel",   label: "Solar Owner Details" },
+    { to: "/admin/solarowners",    icon: "fas fa-solar-panel",   label: "Smart Plug Owner Details" },
     { to: "/smartplug/register",   icon: "fas fa-plug",          label: "Smart Plug Registration" },
     { to: "/admin/smartplugs",     icon: "fas fa-network-wired", label: "Smart Plug Monitoring" },
     { to: "/admin/billing-history",icon: "fas fa-history",       label: "Billing History" },
@@ -164,8 +165,8 @@ export default function Sidebar() {
                 }}
               >
                 <img
-                  alt="ceb logo"
-                  src={ceb}
+                  alt="EDL logo"
+                  src={EDL}
                   style={{ width: "60px", height: "60px", objectFit: "contain" }}
                 />
               </div>

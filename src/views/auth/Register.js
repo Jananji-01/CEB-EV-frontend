@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory, Link } from "react-router-dom/cjs/react-router-dom";
-import ceb from "../../assets/img/ceb.png";
+import EDL from "../../assets/img/EDL.jpeg";
 
 // Reusable styled input component
 function FormField({ label, children }) {
@@ -230,8 +230,8 @@ export default function Register() {
                   }}
                 >
                   <img
-                    alt="ceb logo"
-                    src={ceb}
+                    alt="EDL logo"
+                    src={EDL}
                     style={{
                       width: "66px",
                       height: "66px",
