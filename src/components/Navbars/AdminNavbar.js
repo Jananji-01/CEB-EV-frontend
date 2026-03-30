@@ -30,11 +30,11 @@ export default function Navbar() {
       <nav
         className="absolute top-0 left-0 w-full z-10 md:flex-row md:flex-nowrap md:justify-start flex items-center"
         style={{
-          background: "rgba(0,0,0,0.18)",
-          backdropFilter: "blur(8px)",
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
+          background: "linear-gradient(135deg, #7c0000 0%, #b71c1c 100%)",
+          borderBottom: "1px solid rgba(0,0,0,0.12)",
           padding: "0 24px",
           height: "64px",
+          boxShadow: "0 2px 12px rgba(124,0,0,0.25)",
         }}
       >
         <div className="w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
@@ -46,13 +46,13 @@ export default function Navbar() {
                 width: "34px",
                 height: "34px",
                 borderRadius: "8px",
-                background: "rgba(255,255,255,0.12)",
+                background: "rgba(255,255,255,0.15)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              <i className={`${icon} text-sm`} style={{ color: "rgba(255,255,255,0.8)" }}></i>
+              <i className={`${icon} text-sm`} style={{ color: "rgba(255,255,255,0.95)" }}></i>
             </div>
             <span
               style={{
@@ -68,14 +68,12 @@ export default function Navbar() {
 
           {/* Search bar */}
           <form className="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
-            <div
-              style={{ position: "relative", display: "flex", alignItems: "center" }}
-            >
+            <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
               <span
                 style={{
                   position: "absolute",
                   left: "12px",
-                  color: "rgba(255,255,255,0.4)",
+                  color: "rgba(255,255,255,0.5)",
                   fontSize: "13px",
                   zIndex: 1,
                 }}
@@ -86,23 +84,22 @@ export default function Navbar() {
                 type="text"
                 placeholder="Search..."
                 style={{
-                  background: "rgba(255,255,255,0.1)",
-                  border: "1px solid rgba(255,255,255,0.15)",
+                  background: "rgba(255,255,255,0.12)",
+                  border: "1px solid rgba(255,255,255,0.2)",
                   borderRadius: "8px",
                   padding: "8px 16px 8px 36px",
                   color: "#fff",
                   fontSize: "13px",
                   outline: "none",
                   width: "220px",
-                  transition: "background 0.2s, border-color 0.2s",
                 }}
                 onFocus={(e) => {
-                  e.target.style.background = "rgba(255,255,255,0.16)";
-                  e.target.style.borderColor = "rgba(255,255,255,0.3)";
+                  e.target.style.background = "rgba(255,255,255,0.2)";
+                  e.target.style.borderColor = "rgba(255,255,255,0.4)";
                 }}
                 onBlur={(e) => {
-                  e.target.style.background = "rgba(255,255,255,0.1)";
-                  e.target.style.borderColor = "rgba(255,255,255,0.15)";
+                  e.target.style.background = "rgba(255,255,255,0.12)";
+                  e.target.style.borderColor = "rgba(255,255,255,0.2)";
                 }}
               />
             </div>
