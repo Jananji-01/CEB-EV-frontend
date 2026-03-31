@@ -102,6 +102,7 @@ export default function Sidebar() {
     { to: "/smartplug/register",   icon: "fas fa-plug",          label: "Smart Plug Registration" },
     { to: "/admin/smartplugs",     icon: "fas fa-network-wired", label: "Smart Plug Monitoring" },
     { to: "/admin/billing-history",icon: "fas fa-history",       label: "Billing History" },
+    { to: "/admin/create-new-admin",icon: "fas fa-user-plus",       label: "Create New Admin" },
   ];
 
   let links = [];
@@ -181,7 +182,7 @@ export default function Sidebar() {
                   textTransform: "uppercase",
                 }}
               >
-                EV Management
+                EV Charging system
               </span>
             </div>
           </Link>
@@ -190,7 +191,7 @@ export default function Sidebar() {
           <div style={{ height: "1px", background: "#f3f4f6", marginBottom: "16px" }} />
 
           {/* Mobile user icons */}
-          <ul className="md:hidden flex flex-wrap items-center list-none">
+          <ul className="flex flex-wrap items-center list-none md:hidden">
             <li className="relative inline-block"><NotificationDropdown /></li>
             <li className="relative inline-block"><UserDropdown /></li>
           </ul>
