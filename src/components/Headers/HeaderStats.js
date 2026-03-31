@@ -127,30 +127,7 @@ export default function HeaderStats() {
             gap: "12px",
           }}
         >
-          <div>
-            <h2
-              style={{
-                color: "#fff",
-                fontSize: "22px",
-                fontWeight: "700",
-                letterSpacing: "-0.01em",
-                marginBottom: "4px",
-              }}
-            >
-              {isAdmin ? "Admin Overview" : "My EV Summary"}
-            </h2>
-            <p
-              style={{
-                color: "rgba(255,255,255,0.5)",
-                fontSize: "13px",
-                fontWeight: "400",
-              }}
-            >
-              {isAdmin
-                ? "System-wide statistics and management"
-                : `Monthly stats for ${monthLabel}`}
-            </p>
-          </div>
+
 
           {/* Month pill badge (non-admin only) */}
           {!isAdmin && (

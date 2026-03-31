@@ -15,6 +15,7 @@ const pageTitles = {
   "/admin/smartplugs": { label: "Smart Plug Monitoring", icon: "fas fa-network-wired" },
   "/admin/payment": { label: "Payments", icon: "fas fa-credit-card" },
   "/admin/billing-history": { label: "Billing History", icon: "fas fa-history" },
+  "/admin/create-new-admin": { label: "Create New Admin", icon: "fas fa-user-plus" },
 };
 
 export default function Navbar() {
@@ -28,19 +29,19 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className="absolute top-0 left-0 w-full z-10 md:flex-row md:flex-nowrap md:justify-start flex items-center"
+        className="absolute top-0 left-0 z-10 flex items-center w-full md:flex-row md:flex-nowrap md:justify-start"
         style={{
-          background: "linear-gradient(135deg, #7c0000 0%, #b71c1c 100%)",
+          background: "transparent",
           borderBottom: "1px solid rgba(0,0,0,0.12)",
           padding: "0 24px",
           height: "64px",
           boxShadow: "0 2px 12px rgba(124,0,0,0.25)",
         }}
       >
-        <div className="w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
+        <div className="flex flex-wrap items-center justify-between w-full px-4 mx-auto md:flex-nowrap md:px-10">
 
           {/* Page title with icon */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="items-center hidden gap-3 lg:flex">
             <div
               style={{
                 width: "34px",
@@ -66,49 +67,6 @@ export default function Navbar() {
             </span>
           </div>
 
-          {/* Search bar */}
-          <form className="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
-            <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
-              <span
-                style={{
-                  position: "absolute",
-                  left: "12px",
-                  color: "rgba(255,255,255,0.5)",
-                  fontSize: "13px",
-                  zIndex: 1,
-                }}
-              >
-                <i className="fas fa-search"></i>
-              </span>
-              <input
-                type="text"
-                placeholder="Search..."
-                style={{
-                  background: "rgba(255,255,255,0.12)",
-                  border: "1px solid rgba(255,255,255,0.2)",
-                  borderRadius: "8px",
-                  padding: "8px 16px 8px 36px",
-                  color: "#fff",
-                  fontSize: "13px",
-                  outline: "none",
-                  width: "220px",
-                }}
-                onFocus={(e) => {
-                  e.target.style.background = "rgba(255,255,255,0.2)";
-                  e.target.style.borderColor = "rgba(255,255,255,0.4)";
-                }}
-                onBlur={(e) => {
-                  e.target.style.background = "rgba(255,255,255,0.12)";
-                  e.target.style.borderColor = "rgba(255,255,255,0.2)";
-                }}
-              />
-            </div>
-          </form>
-
-          {/* User dropdown */}
-          <ul className="flex-col md:flex-row list-none items-center hidden md:flex">
-            <UserDropdown />
-          </ul>
         </div>
       </nav>
     </>
