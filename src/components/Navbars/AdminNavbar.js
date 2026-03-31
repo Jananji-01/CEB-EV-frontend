@@ -31,7 +31,7 @@ export default function Navbar() {
       <nav
         className="absolute top-0 left-0 z-10 flex items-center w-full md:flex-row md:flex-nowrap md:justify-start"
         style={{
-          background: "linear-gradient(135deg, #7c0000 0%, #b71c1c 100%)",
+          background: "transparent",
           borderBottom: "1px solid rgba(0,0,0,0.12)",
           padding: "0 24px",
           height: "64px",
