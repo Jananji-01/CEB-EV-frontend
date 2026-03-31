@@ -953,9 +953,9 @@ const ChargingEV = () => {
   };
 
   return (
-    <div className="relative md:ml-64 bg-gray-50 min-h-screen">
+    <div className="relative md:ml-50 bg-gray-50 min-h-screen">
       {/* Header - Updated to crimson gradient */}
-      <div className="relative bg-gradient-to-r from-crimson to-crimson-dark md:pt-24 pb-16 md:pb-20 pt-12 shadow-lg">
+      <div className="relative bg-gradient-to-r from-crimson to-crimson-dark md:pt-6 pb-5 md:pb- pt-12 shadow-lg">
         <div className="px-4 md:px-10 mx-auto w-full">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div>
@@ -1028,7 +1028,7 @@ const ChargingEV = () => {
                   </div>
                   <button
                     onClick={toggleQRScanner}
-                    className="px-6 py-3 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white rounded-lg font-medium flex items-center transition duration-300 shadow-md"
+                    className="px-6 py-3  bg-gradient-to-r from-crimson to-crimson-dark hover:from-crimson-50 hover:to-crimson-100 text-white rounded-lg font-medium flex items-center transition duration-300 shadow-md"
                   >
                     <i className="fas fa-qrcode mr-2"></i>
                     {showQRScanner ? 'Hide Scanner' : 'Scan QR'}
@@ -1248,7 +1248,7 @@ const ChargingEV = () => {
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-3">
                         <div 
-                          className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 h-3 rounded-full transition-all duration-1000 ease-out"
+                          className=" bg-gradient-to-r from-crimson to-crimson-dark to-purple-600 h-3 rounded-full transition-all duration-1000 ease-out"
                           style={{ width: `${Math.min(100, (realTimeData.energy / 50) * 100)}%` }}
                         ></div>
                       </div>
@@ -1324,7 +1324,7 @@ const ChargingEV = () => {
               </div>
               
               {/* Updated Cost card with modern gradient */}
-              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-5 rounded-xl shadow-lg">
+              <div className=" bg-gradient-to-r from-crimson to-crimson-dark p-5 rounded-xl shadow-lg">
                 <p className="text-sm text-white mb-1">Estimated Cost</p>
                 <p className="font-bold text-2xl text-white">${calculateCost(realTimeData.energy)}</p>
                 <p className="text-xs text-white mt-1">{realTimeData.energy.toFixed(2)} kWh @ $0.15/kWh</p>
@@ -1438,7 +1438,7 @@ const ChargingEV = () => {
                     {/* Updated Download Receipt button */}
                     <button
                         onClick={downloadTransactionReceipt}
-                        className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-lg font-medium transition duration-300 shadow-md"
+                        className="px-6 py-3  bg-gradient-to-r from-crimson to-crimson-dark hover:from-blue-600 hover:to-cyan-600 text-white rounded-lg font-medium transition duration-300 shadow-md"
                     >
                         <i className="fas fa-print mr-2"></i> Download Receipt
                     </button>
@@ -1455,15 +1455,15 @@ const ChargingEV = () => {
 
         {/* Help Section */}
         {!deviceDetails && !showQRScanner && (
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl shadow-lg p-8 border border-blue-200 text-center">
-            <div className="mx-auto w-20 h-20 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-full flex items-center justify-center mb-6">
-              <i className="fas fa-qrcode text-blue-500 text-3xl"></i>
+          <div className="bg-gradient-to-r from-crimson-50 to-crimson-50 rounded-2xl shadow-lg p-8 border border-red-200 text-center">
+            <div className="mx-auto w-20 h-20 bg-gradient-to-r from-red-100 to-meroon-100 rounded-full flex items-center justify-center mb-6">
+              <i className="fas fa-qrcode text-red-500 text-3xl"></i>
             </div>
             <h3 className="text-2xl font-bold text-gray-800 mb-4">How to Get Started</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
               <div className="bg-white p-6 rounded-xl shadow-sm">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-blue-600 font-bold">1</span>
+                <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-red-600 font-bold">1</span>
                 </div>
                 <h4 className="font-bold text-gray-800 mb-2">Scan QR Code</h4>
                 <p className="text-gray-600 text-sm">Click "Scan QR" button and point camera at the QR code on the smart plug</p>
@@ -1489,16 +1489,16 @@ const ChargingEV = () => {
             <div className="mt-8">
               <button
                 onClick={toggleQRScanner}
-                className="px-8 py-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300"
+                className="px-8 py-4  bg-gradient-to-r from-crimson to-crimson-dark hover:from-crimson-600 hover:to-crimson-700 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 <i className="fas fa-qrcode mr-3"></i>
                 Start by Scanning QR Code
               </button>
             </div>
             
-            <div className="mt-8 p-4 bg-white rounded-lg border border-blue-200 inline-block">
+            <div className="mt-8 p-4 bg-white rounded-lg border border-crimson-200 inline-block">
               <p className="text-gray-700">
-                <i className="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                <i className="fas fa-lightbulb text-red-500 mr-2"></i>
                 <strong>Manual Option:</strong> You can also manually enter Device ID (e.g., DEV-1001, SP-001)
               </p>
             </div>
