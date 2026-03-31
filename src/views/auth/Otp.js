@@ -1,6 +1,85 @@
+// import React, { useState } from "react";
+// import { Link, useHistory } from "react-router-dom";
+// import EDL from "../../assets/img/EDL.jpeg";
+// import { ToastContainer, toast } from "react-toastify";
+
+// export default function Login() {
+//   const [otp, setOtp] = useState("");
+//   const history = useHistory();
+
+//   const baseUrl =
+//     process.env.REACT_APP_API_BASE_URL || "http://127.0.0.1:8088/EV";
+
+//   const handleOtpSubmit = async (e) => {
+//     e.preventDefault();
+
+//     const username = sessionStorage.getItem("pendingUser");
+//     if (!username) {
+//       toast.error("Session expired. Please register again.", {
+//         position: "top-right",
+//         autoClose: 3000,
+//       });
+//       history.push("/auth/register");
+//       return;
+//     }
+
+//     if (!otp) {
+//       toast.error("Please enter your OTP", {
+//         position: "top-right",
+//         autoClose: 3000,
+//       });
+//       return;
+//     }
+
+//     try {
+//       const response = await fetch(`${baseUrl}/api/auth/verify-otp`, {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({ username, otp }),
+//       });
+
+//       const contentType = response.headers.get("content-type");
+//       let data;
+//       if (contentType && contentType.includes("application/json")) {
+//         data = await response.json();
+//       } else {
+//         data = await response.text();
+//         throw new Error("Unexpected response format: " + data);
+//       }
+
+//       if (response.ok) {
+//         toast.success("OTP verified successfully!", {
+//           position: "top-right",
+//           autoClose: 2000,
+//         });
+
+//         sessionStorage.removeItem("pendingUser");
+
+//         setTimeout(() => {
+//           history.push("/auth/login");
+//         }, 6000);
+//       } else {
+//         toast.error(data.message || "OTP verification failed", {
+//           position: "top-right",
+//           autoClose: 3000,
+//         });
+//       }
+//     } catch (error) {
+//       console.error("OTP verification error:", error);
+//       toast.error("Error verifying OTP. Try again.", {
+//         position: "top-right",
+//         autoClose: 3000,
+//       });
+//     }
+//   };
+
+
+
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import ceb from "../../assets/img/ceb.png";
+import EDL from "../../assets/img/EDL.jpeg";
 import { ToastContainer, toast } from "react-toastify";
 
 export default function Login() {
@@ -58,7 +137,7 @@ export default function Login() {
         sessionStorage.removeItem("pendingUser");
 
         setTimeout(() => {
-          history.push("/auth/login");
+          history.push("/auth/login"); // redirect to login page
         }, 6000);
       } else {
         toast.error(data.message || "OTP verification failed", {
@@ -74,6 +153,10 @@ export default function Login() {
       });
     }
   };
+
+
+
+
 
   return (
     <>
@@ -180,8 +263,8 @@ export default function Login() {
                   }}
                 >
                   <img
-                    alt="ceb logo"
-                    src={ceb}
+                    alt="EDL logo"
+                    src={EDL}
                     style={{
                       width: "72px",
                       height: "72px",
