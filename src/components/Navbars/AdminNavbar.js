@@ -31,11 +31,11 @@ export default function Navbar() {
       <nav
         className="absolute top-0 left-0 z-10 flex items-center w-full md:flex-row md:flex-nowrap md:justify-start"
         style={{
-          background: "rgba(0,0,0,0.18)",
-          backdropFilter: "blur(8px)",
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
+          background: "linear-gradient(135deg, #7c0000 0%, #b71c1c 100%)",
+          borderBottom: "1px solid rgba(0,0,0,0.12)",
           padding: "0 24px",
           height: "64px",
+          boxShadow: "0 2px 12px rgba(124,0,0,0.25)",
         }}
       >
         <div className="flex flex-wrap items-center justify-between w-full px-4 mx-auto md:flex-nowrap md:px-10">
@@ -47,13 +47,13 @@ export default function Navbar() {
                 width: "34px",
                 height: "34px",
                 borderRadius: "8px",
-                background: "rgba(255,255,255,0.12)",
+                background: "rgba(255,255,255,0.15)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              <i className={`${icon} text-sm`} style={{ color: "rgba(255,255,255,0.8)" }}></i>
+              <i className={`${icon} text-sm`} style={{ color: "rgba(255,255,255,0.95)" }}></i>
             </div>
             <span
               style={{
