@@ -408,52 +408,40 @@ const ChargingEV = () => {
         break;
         
       case "METER_VALUES":
-            console.log("🔋 [FRONTEND] Processing METER_VALUES:", message);
+          console.log("🔋 [FRONTEND] Processing METER_VALUES:", message);
             
-            // Check if meterValue exists
-            if (!message.meterValue) {
-                console.error("❌ [FRONTEND] No meterValue in METER_VALUES message");
-                break;
-            }
+          if (message.power !== undefined) {
+              // power is in Watts, convert to kW for display
+              setRealTimeData(prev => ({ ...prev, power: message.power / 1000.0 }));
+          }
+          if (message.voltage !== undefined) {
+              setRealTimeData(prev => ({ ...prev, voltage: message.voltage }));
+          }
+          if (message.current !== undefined) {
+              setRealTimeData(prev => ({ ...prev, current: message.current }));
+          }
+          if (message.totalConsumption !== undefined) {
+              // totalConsumption is already in kWh
+              setRealTimeData(prev => ({ ...prev, energy: message.totalConsumption }));
+          }
+
+          if (!isCharging) setIsCharging(true);
+          break;
+                 
+      case "BILLING_STATUS":
+          if (message.success) {
+              toast.success(`✅ Billing info sent: ${message.message}`, {
+                  position: "top-right",
+                  autoClose: 5000,
+              });
+          } else {
+              toast.error(`❌ Billing failed: ${message.message}`, {
+                  position: "top-right",
+                  autoClose: 5000,
+              });
+          }
+          break;
             
-            // Check if sampledValue exists
-            if (!message.meterValue.sampledValue) {
-                console.error("❌ [FRONTEND] No sampledValue in meterValue");
-                break;
-            }
-            
-            console.log("🔋 [FRONTEND] Sampled values:", message.meterValue.sampledValue);
-            
-            // Process each sample
-            message.meterValue.sampledValue.forEach(sample => {
-                const value = parseFloat(sample.value) || 0;
-                console.log(`🔋 [FRONTEND] Sample - Value: ${value}, Measurand: ${sample.measurand}, Unit: ${sample.unit}`);
-                
-                if (sample.measurand === "Power.Active.Import" || sample.measurand === "Power.Active.Import.Register") {
-                    console.log(`🔋 [FRONTEND] Setting power to: ${value} kW`);
-                    setRealTimeData(prev => ({ ...prev, power: value }));
-                } else if (sample.measurand === "Voltage") {
-                    console.log(`🔋 [FRONTEND] Setting voltage to: ${value} V`);
-                    setRealTimeData(prev => ({ ...prev, voltage: value }));
-                } else if (sample.measurand === "Current.Import") {
-                    console.log(`🔋 [FRONTEND] Setting current to: ${value} A`);
-                    setRealTimeData(prev => ({ ...prev, current: value }));
-                } else if (sample.measurand === "Energy.Active.Import.Register") {
-                    console.log(`🔋 [FRONTEND] Setting energy to: ${value} kWh`);
-                    setRealTimeData(prev => ({ ...prev, energy: value }));
-                } else if (sample.measurand === "Temperature") {
-                    console.log(`🔋 [FRONTEND] Setting temperature to: ${value} °C`);
-                    setRealTimeData(prev => ({ ...prev, temperature: value }));
-                }
-            });
-            
-            // Ensure charging state is true when we get meter values
-            if (!isCharging) {
-                console.log("🔋 [FRONTEND] Setting charging state to true");
-                setIsCharging(true);
-            }
-            break;
-        
       case "OPERATION_RESULT":
         if (message.result === "PENDING") {
           toast.info("Charging command sent to device...", {
@@ -691,50 +679,13 @@ const ChargingEV = () => {
           return;
       }
 
-      toast.info("Sending billing information...", {
+      toast.info("Redirecting to payment page...", {
           position: "top-right",
           autoClose: 2000,
       });
-
-      try {
-          const billingResponse = await fetch(`${baseUrl}/api/billing/send-to-billing`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ transactionId: transactionDetails.transactionId })
-          });
-          const billingResult = await billingResponse.json();
-
-          console.log("========== BILLING API CALL ==========");
-          console.log("✅ Success:", billingResult.success);
-          console.log("📦 Request Payload:", billingResult.payload);
-          console.log("📨 Message:", billingResult.message);
-          if (billingResult.statusCode) console.log("🔢 Status Code:", billingResult.statusCode);
-          if (billingResult.error) console.log("❌ Error:", billingResult.error);
-          console.log("======================================");
-
-          if (billingResult.success) {
-              toast.success("✅ Billing information sent to utility", {
-                  position: "top-right",
-                  autoClose: 5000,
-              });
-          } else {
-              toast.warn("⚠️ Billing API temporarily unavailable – payment will be handled separately", {
-                  position: "top-right",
-                  autoClose: 7000,
-              });
-          }
-      } catch (billingError) {
-          console.error("❌ Billing API call error:", billingError);
-          toast.error("❌ Could not reach billing service", {
-              position: "top-right",
-              autoClose: 5000,
-          });
-      }
-
-      // Redirect to payment page after a short delay (existing behavior)
       setTimeout(() => {
           window.location.href = "/smartplug/payment";
-      }, 2000);
+      }, 1500);
   };
 
   const handleRefreshDevice = () => {
@@ -776,7 +727,7 @@ const ChargingEV = () => {
   };
 
   const calculateCost = (energy) => {
-    const ratePerKwh = 0.15; // $0.15 per kWh
+    const ratePerKwh = 87;
     return (energy * ratePerKwh).toFixed(2);
   };
 
@@ -864,10 +815,10 @@ const ChargingEV = () => {
       doc.text('BILLING INFORMATION', 20, billingY);
       
       const billingInfo = [
-        ['Rate:', '$0.15 per kWh'],
+        ['Rate:', 'Rs. 87 per kWh'],
         ['Total Energy:', `${transactionDetails.powerConsumed} kWh`],
         ['Subtotal:', transactionDetails.cost],
-        ['Tax (0%):', '$0.00'],
+        ['Tax (0%):', 'Rs. 0.00'],
         ['Total Amount:', transactionDetails.cost]
       ];
       
@@ -1326,8 +1277,8 @@ const ChargingEV = () => {
               {/* Updated Cost card with modern gradient */}
               <div className=" bg-gradient-to-r from-crimson to-crimson-dark p-5 rounded-xl shadow-lg">
                 <p className="text-sm text-white mb-1">Estimated Cost</p>
-                <p className="font-bold text-2xl text-white">${calculateCost(realTimeData.energy)}</p>
-                <p className="text-xs text-white mt-1">{realTimeData.energy.toFixed(2)} kWh @ $0.15/kWh</p>
+                <p className="font-bold text-2xl text-white">Rs. {calculateCost(realTimeData.energy)}</p>
+                <p className="text-xs text-white mt-1">{realTimeData.energy.toFixed(2)} kWh @ Rs. 87/kWh</p>
               </div>
             </div>
           </div>

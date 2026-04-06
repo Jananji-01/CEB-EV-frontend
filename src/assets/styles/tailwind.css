@@ -2829,6 +2829,10 @@ select {
   left: 260px;
 }
 
+.resize {
+  resize: both;
+}
+
 * {
   --tw-shadow: 0 0 #0000;
 }
