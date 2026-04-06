@@ -1,11 +1,12 @@
 import React from "react";
 
 // components
-
-import CardLineChart from "components/Cards/CardLineChart.js";
+import MapExample from "components/Maps/MapExample.js";
+// import CardLineChart from "components/Cards/CardLineChart.js";
 import CardBarChart from "components/Cards/CardBarChart.js";
 import CardPageVisits from "components/Cards/CardPageVisits.js";
 import CardSocialTraffic from "components/Cards/CardSocialTraffic.js";
+import CardLineChart from "components/Cards/CardLineChart.js";
 
 export default function Dashboard() {
   const BASE_GRADIENT = "linear-gradient(135deg, #7c0000 0%, #a30000 100%)";
@@ -37,7 +38,7 @@ export default function Dashboard() {
 
         <div className="flex flex-wrap">
           <div className="w-full px-4 mb-12 xl:w-8/12 xl:mb-0">
-            <CardLineChart />
+            <MapExample/>
           </div>
           <div className="w-full px-4 xl:w-4/12">
             <CardBarChart />
@@ -49,6 +50,9 @@ export default function Dashboard() {
           </div>
           <div className="w-full px-4 xl:w-4/12">
             <CardSocialTraffic />
+          </div>
+          <div className="w-full px-4 mb-12 xl:w-8/12 xl:mb-0">
+            <CardLineChart />
           </div>
         </div>
       </div>
