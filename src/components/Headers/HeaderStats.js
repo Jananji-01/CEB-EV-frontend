@@ -34,7 +34,7 @@ export default function HeaderStats() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         username: username,
-        accountNumber: accountNumber,
+        eaccountNumber: accountNumber,
       }),
     })
       .then((res) => res.json())
