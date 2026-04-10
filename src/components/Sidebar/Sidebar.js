@@ -82,8 +82,8 @@ export default function Sidebar() {
   const isActive = (path) => href.indexOf(path) !== -1;
 
   const evOwnerLinks = [
-    { to: "/admin/evdashboard", icon: "fas fa-tachometer-alt", label: "Dashboard" },
-    { to: "/admin/maps",        icon: "fas fa-map-marked-alt", label: "Charging Map" },
+    { to: "/admin/evdashboard", icon: "fas fa-map-marked-alt", label: "Dashboard" },
+    // { to: "/admin/maps",        icon: "fas fa-map-marked-alt", label: "Charging Map" },
     { to: "/smartplug/charging",icon: "fas fa-bolt",           label: "Charging EV" },
     // { to: "/admin/payment",     icon: "fas fa-credit-card",    label: "Payments" },
   ];

@@ -4,9 +4,11 @@ import React from "react";
 import MapExample from "components/Maps/MapExample.js";
 // import CardLineChart from "components/Cards/CardLineChart.js";
 import CardBarChart from "components/Cards/CardBarChart.js";
-import CardPageVisits from "components/Cards/CardPageVisits.js";
 import CardSocialTraffic from "components/Cards/CardSocialTraffic.js";
 import CardLineChart from "components/Cards/CardLineChart.js";
+import CardRevenueEnergy from "components/Cards/CardRevenueEnergy.js";
+import CardStationStatus from "components/Cards/CardStationStatus.js";
+import CardChargingModes from "components/Cards/CardChargingModes";
 
 export default function Dashboard() {
   const BASE_GRADIENT = "linear-gradient(135deg, #7c0000 0%, #a30000 100%)";
@@ -45,14 +47,24 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="flex flex-wrap mt-4">
-          <div className="w-full px-4 mb-12 xl:w-8/12 xl:mb-0">
+          {/* <div className="w-full px-4 mb-12 xl:w-8/12 xl:mb-0">
             <CardPageVisits />
           </div>
           <div className="w-full px-4 xl:w-4/12">
             <CardSocialTraffic />
-          </div>
-          <div className="w-full px-4 mb-12 xl:w-8/12 xl:mb-0">
+          </div> */}
+          {/* <div className="w-full px-4 mb-12 xl:w-8/12 xl:mb-0">
             <CardLineChart />
+          </div> */}
+          {/* ✅ NEW: Revenue & Energy Chart - Full Width */}
+          <div className="w-full px-4 mb-12 2xl:w-8/12 xl:mb-0">
+              <CardRevenueEnergy />
+          </div>
+          <div className="w-full px-4 mb-12 xl:w-6/12 xl:mb-0">
+            <CardStationStatus />
+          </div>
+          <div className="w-full px-4 mb-12 xl:w-6/12 xl:mb-0">
+            <CardChargingModes />
           </div>
         </div>
       </div>
