@@ -1986,6 +1986,10 @@ select {
   height: 12rem;
 }
 
+.h-64 {
+  height: 16rem;
+}
+
 .h-96 {
   height: 24rem;
 }
@@ -2596,6 +2600,10 @@ select {
 
 .pb-2 {
   padding-bottom: 0.5rem;
+}
+
+.pt-3 {
+  padding-top: 0.75rem;
 }
 
 .pt-4 {
@@ -3279,6 +3287,10 @@ select {
   width: 12rem;
 }
 
+.w-1\/3 {
+  width: 33.333333%;
+}
+
 .w-10\/12 {
   width: 83.333333%;
 }
@@ -3400,6 +3412,10 @@ select {
 
 .duration-300 {
   transition-duration: 300ms;
+}
+
+.duration-500 {
+  transition-duration: 500ms;
 }
 
 .duration-1000 {
