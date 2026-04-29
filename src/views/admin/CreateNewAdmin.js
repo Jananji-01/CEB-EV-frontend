@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+// FormField Component
 function FormField({ label, icon, children, error }) {
   return (
     <div style={{ marginBottom: "24px" }}>
@@ -39,6 +40,7 @@ const inputStyle = {
   fontFamily: "inherit",
 };
 
+// StyledInput Component
 function StyledInput(props) {
   const [isFocused, setIsFocused] = useState(false);
   
@@ -62,7 +64,7 @@ function StyledInput(props) {
   );
 }
 
-// New component for password input with show/hide functionality
+// PasswordInput Component
 function PasswordInput({ value, onChange, placeholder, required, error }) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -108,6 +110,7 @@ function PasswordInput({ value, onChange, placeholder, required, error }) {
   );
 }
 
+// AdminCard Component
 function AdminCard({ admin, onDelete, onEdit }) {
   return (
     <div
@@ -245,7 +248,147 @@ function AdminCard({ admin, onDelete, onEdit }) {
   );
 }
 
-export default function AdminDashboard() {
+// Pagination Component
+function Pagination({ currentPage, totalPages, onPageChange, itemsPerPage, onItemsPerPageChange }) {
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxVisible = 5;
+    
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) pageNumbers.push(i);
+        pageNumbers.push('...');
+        pageNumbers.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pageNumbers.push(1);
+        pageNumbers.push('...');
+        for (let i = totalPages - 3; i <= totalPages; i++) pageNumbers.push(i);
+      } else {
+        pageNumbers.push(1);
+        pageNumbers.push('...');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) pageNumbers.push(i);
+        pageNumbers.push('...');
+        pageNumbers.push(totalPages);
+      }
+    }
+    
+    return pageNumbers;
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        flexWrap: "wrap",
+        gap: "16px",
+        marginTop: "24px",
+        padding: "16px 0",
+        borderTop: "1px solid #e5e7eb",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "13px", color: "#6b7280" }}>
+        <span>Show</span>
+        <select
+          value={itemsPerPage}
+          onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
+          style={{
+            padding: "6px 10px",
+            border: "1px solid #e5e7eb",
+            borderRadius: "8px",
+            cursor: "pointer",
+            fontSize: "13px",
+            outline: "none",
+          }}
+        >
+          <option value={6}>6</option>
+          <option value={12}>12</option>
+          <option value={24}>24</option>
+          <option value={48}>48</option>
+        </select>
+        <span>entries</span>
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
+        <button
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          style={{
+            padding: "8px 12px",
+            border: "1px solid #e5e7eb",
+            background: "white",
+            borderRadius: "8px",
+            cursor: currentPage === 1 ? "not-allowed" : "pointer",
+            opacity: currentPage === 1 ? 0.5 : 1,
+            transition: "all 0.2s ease",
+            display: "flex",
+            alignItems: "center",
+            gap: "4px",
+            fontSize: "13px",
+          }}
+        >
+          <i className="fas fa-chevron-left" style={{ fontSize: "10px" }}></i>
+          Previous
+        </button>
+
+        {getPageNumbers().map((page, index) => (
+          <button
+            key={index}
+            onClick={() => typeof page === 'number' && onPageChange(page)}
+            disabled={page === '...'}
+            style={{
+              padding: "8px 12px",
+              minWidth: "38px",
+              border: page === currentPage ? "none" : "1px solid #e5e7eb",
+              background: page === currentPage ? "linear-gradient(135deg, #7c0000 0%, #a30000 100%)" : "white",
+              color: page === currentPage ? "white" : "#6b7280",
+              borderRadius: "8px",
+              cursor: page === '...' ? "default" : "pointer",
+              fontWeight: page === currentPage ? "600" : "400",
+              transition: "all 0.2s ease",
+              fontSize: "13px",
+            }}
+          >
+            {page}
+          </button>
+        ))}
+
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          style={{
+            padding: "8px 12px",
+            border: "1px solid #e5e7eb",
+            background: "white",
+            borderRadius: "8px",
+            cursor: currentPage === totalPages ? "not-allowed" : "pointer",
+            opacity: currentPage === totalPages ? 0.5 : 1,
+            transition: "all 0.2s ease",
+            display: "flex",
+            alignItems: "center",
+            gap: "4px",
+            fontSize: "13px",
+          }}
+        >
+          Next
+          <i className="fas fa-chevron-right" style={{ fontSize: "10px" }}></i>
+        </button>
+      </div>
+
+      <div style={{ fontSize: "12px", color: "#9ca3af" }}>
+        Showing page {currentPage} of {totalPages}
+      </div>
+    </div>
+  );
+}
+
+// Main Component
+export default function CreateNewAdmin() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -254,9 +397,14 @@ export default function AdminDashboard() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [editingAdmin, setEditingAdmin] = useState(null);
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(6);
 
-   const baseUrl = process.env.REACT_APP_API_BASE_URL;
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
   const fetchAdmins = async () => {
     try {
@@ -273,6 +421,31 @@ export default function AdminDashboard() {
   useEffect(() => {
     fetchAdmins();
   }, []);
+
+  // Reset to first page when admins data changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [admins.length]);
+
+  // Pagination calculations
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentAdmins = admins.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(admins.length / itemsPerPage);
+
+  // Handle page change
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+      document.getElementById("admins-list")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  // Handle items per page change
+  const handleItemsPerPageChange = (newItemsPerPage) => {
+    setItemsPerPage(newItemsPerPage);
+    setCurrentPage(1);
+  };
 
   const validateForm = () => {
     const newErrors = {};
@@ -300,7 +473,11 @@ export default function AdminDashboard() {
       
       const method = editingAdmin ? "PUT" : "POST";
       
-      const body = { username, email };
+      const body = { 
+        username, 
+        email
+      };
+      
       if (password.trim()) {
         body.password = password;
       }
@@ -310,26 +487,40 @@ export default function AdminDashboard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-
+      
       const result = await response.json();
-
+      
       if (!response.ok) {
-        alert(result.message || (editingAdmin ? "Admin update failed" : "Admin creation failed"));
+        alert(result.message || result.error || (editingAdmin ? "Admin update failed" : "Admin creation failed"));
         return;
       }
-
-      setShowSuccess(true);
-      setTimeout(() => setShowSuccess(false), 3000);
       
+      // Set success message based on action
+      if (editingAdmin) {
+        setSuccessMessage("Admin updated successfully!");
+      } else {
+        setSuccessMessage("Admin created successfully!");
+      }
+      setShowSuccess(true);
+      
+      // Auto-hide success message after 3 seconds
+      setTimeout(() => {
+        setShowSuccess(false);
+        setSuccessMessage("");
+      }, 3000);
+      
+      // Reset form
       setUsername("");
       setEmail("");
       setPassword("");
       setErrors({});
       setEditingAdmin(null);
-
-      fetchAdmins();
+      
+      // Refresh the list
+      await fetchAdmins();
+      
     } catch (error) {
-      console.error(error);
+      console.error("Error:", error);
       alert(editingAdmin ? "Failed to update admin" : "Failed to create admin");
     } finally {
       setIsSubmitting(false);
@@ -344,12 +535,20 @@ export default function AdminDashboard() {
         });
         
         if (response.ok) {
+          setSuccessMessage("Admin deleted successfully!");
+          setShowSuccess(true);
+          setTimeout(() => {
+            setShowSuccess(false);
+            setSuccessMessage("");
+          }, 3000);
+          
           fetchAdmins();
         } else {
           alert("Failed to delete admin");
         }
       } catch (error) {
         console.error("Error deleting admin:", error);
+        alert("Failed to delete admin");
       }
     }
   };
@@ -357,10 +556,12 @@ export default function AdminDashboard() {
   const handleEdit = (admin) => {
     setEditingAdmin(admin);
     setUsername(admin.username);
-    setEmail(admin.user?.email || "");
+    setEmail(admin.email);
     setPassword("");
     setErrors({});
-    // Scroll to form
+    setShowSuccess(false);
+    setSuccessMessage("");
+    
     document.getElementById("create-form")?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -370,6 +571,8 @@ export default function AdminDashboard() {
     setEmail("");
     setPassword("");
     setErrors({});
+    setShowSuccess(false);
+    setSuccessMessage("");
   };
 
   return (
@@ -408,7 +611,7 @@ export default function AdminDashboard() {
                   gap: "12px",
                 }}
               >
-                <i className="fas fa-tachometer-alt" style={{ background: "linear-gradient(135deg, #7c0000 0%, #a30000 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}></i>
+                <i className="fas fa-tachometer-alt"></i>
                 Admin Dashboard
               </h1>
               <p style={{ color: "#6b7280", fontSize: "14px" }}>
@@ -431,14 +634,6 @@ export default function AdminDashboard() {
                 fontWeight: "500",
                 fontSize: "13px",
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#f9fafb";
-                e.currentTarget.style.borderColor = "#7c0000";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "white";
-                e.currentTarget.style.borderColor = "#e5e7eb";
-              }}
             >
               <i className="fas fa-sync-alt" style={{ fontSize: "12px" }}></i>
               Refresh
@@ -455,6 +650,7 @@ export default function AdminDashboard() {
               padding: "28px",
               boxShadow: "0 4px 6px -1px rgba(0,0,0,0.1)",
               height: "fit-content",
+              position: "relative",
             }}
           >
             <div
@@ -484,21 +680,27 @@ export default function AdminDashboard() {
               )}
             </div>
 
+            {/* Success Message */}
             {showSuccess && (
               <div
                 style={{
                   background: "#10b981",
                   color: "white",
-                  padding: "10px",
+                  padding: "12px 16px",
                   borderRadius: "10px",
                   marginBottom: "18px",
                   textAlign: "center",
                   animation: "slideDown 0.3s ease",
                   fontSize: "13px",
+                  fontWeight: "500",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px",
                 }}
               >
-                <i className="fas fa-check-circle" style={{ marginRight: "6px" }}></i>
-                {editingAdmin ? "Admin updated" : "Admin created"} successfully!
+                <i className="fas fa-check-circle" style={{ fontSize: "16px" }}></i>
+                {successMessage}
               </div>
             )}
 
@@ -552,18 +754,6 @@ export default function AdminDashboard() {
                     gap: "8px",
                     fontSize: "13px",
                   }}
-                  onMouseEnter={(e) => {
-                    if (!isSubmitting) {
-                      e.currentTarget.style.transform = "translateY(-2px)";
-                      e.currentTarget.style.boxShadow = "0 4px 12px rgba(124,0,0,0.3)";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isSubmitting) {
-                      e.currentTarget.style.transform = "translateY(0)";
-                      e.currentTarget.style.boxShadow = "none";
-                    }
-                  }}
                 >
                   {isSubmitting ? (
                     <>
@@ -605,7 +795,7 @@ export default function AdminDashboard() {
           </div>
 
           {/* Admins List */}
-          <div>
+          <div id="admins-list">
             <div
               style={{
                 display: "flex",
@@ -634,6 +824,7 @@ export default function AdminDashboard() {
                 <p style={{ color: "#6b7280", fontSize: "13px" }}>
                   <i className="fas fa-chart-line" style={{ fontSize: "11px", marginRight: "4px" }}></i>
                   {admins.length} {admins.length === 1 ? "admin" : "admins"} total
+                  {admins.length > 0 && ` • Showing ${indexOfFirstItem + 1}-${Math.min(indexOfLastItem, admins.length)}`}
                 </p>
               </div>
             </div>
@@ -667,22 +858,34 @@ export default function AdminDashboard() {
                 </p>
               </div>
             ) : (
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-                  gap: "16px",
-                }}
-              >
-                {admins.map((admin) => (
-                  <AdminCard
-                    key={admin.adminId}
-                    admin={admin}
-                    onDelete={handleDelete}
-                    onEdit={handleEdit}
+              <>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                    gap: "16px",
+                  }}
+                >
+                  {currentAdmins.map((admin) => (
+                    <AdminCard
+                      key={admin.adminId}
+                      admin={admin}
+                      onDelete={handleDelete}
+                      onEdit={handleEdit}
+                    />
+                  ))}
+                </div>
+                
+                {totalPages > 1 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                    itemsPerPage={itemsPerPage}
+                    onItemsPerPageChange={handleItemsPerPageChange}
                   />
-                ))}
-              </div>
+                )}
+              </>
             )}
           </div>
         </div>

@@ -19,6 +19,10 @@ export default function EVOwnerDetails() {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
   const loadData = async () => {
     try {
       setLoading(true);
@@ -38,6 +42,7 @@ export default function EVOwnerDetails() {
       }));
 
       setRows(mapped);
+      setCurrentPage(1); // Reset to first page when new data loads
     } catch (err) {
       toast.error("Failed to load EV owner data");
       setRows([]);
@@ -69,9 +74,16 @@ export default function EVOwnerDetails() {
     });
   }, [rows, searchAccount, searchName]);
 
+  // Pagination calculations
+  const totalPages = Math.ceil(filtered.length / rowsPerPage);
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = filtered.slice(indexOfFirstRow, indexOfLastRow);
+
   const clearFilters = () => {
     setSearchAccount("");
     setSearchName("");
+    setCurrentPage(1);
     setTimeout(() => loadData(), 0);
   };
 
@@ -85,6 +97,17 @@ export default function EVOwnerDetails() {
     if (searchName) params.append("username", searchName);
 
     window.open(`${BASE_URL}/api/admins/ev-owners/csv?${params.toString()}`, "_blank");
+  };
+
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const handleRowsPerPageChange = (e) => {
+    setRowsPerPage(Number(e.target.value));
+    setCurrentPage(1);
   };
 
   return (
@@ -489,7 +512,7 @@ export default function EVOwnerDetails() {
                     </td>
                   </tr>
                 ) : (
-                  filtered.map((r, idx) => (
+                  currentRows.map((r, idx) => (
                     <tr
                       key={`${r.username}-${idx}`}
                       style={{
@@ -564,6 +587,296 @@ export default function EVOwnerDetails() {
               </tbody>
             </table>
           </div>
+
+          {/* Pagination Section */}
+          {!loading && filtered.length > 0 && (
+            <div
+              style={{
+                padding: "16px 24px",
+                borderTop: "1px solid #f0f0f0",
+                background: "white",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexWrap: "wrap",
+                gap: "16px",
+              }}
+            >
+              {/* Rows per page selector */}
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <label style={{ fontSize: "13px", color: "#6b7280" }}>
+                  Show
+                </label>
+                <select
+                  value={rowsPerPage}
+                  onChange={handleRowsPerPageChange}
+                  style={{
+                    padding: "6px 10px",
+                    fontSize: "13px",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                    background: "white",
+                    cursor: "pointer",
+                    outline: "none",
+                  }}
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={25}>25</option>
+                  <option value={50}>50</option>
+                </select>
+                <label style={{ fontSize: "13px", color: "#6b7280" }}>
+                  entries
+                </label>
+              </div>
+
+              {/* Pagination controls */}
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+                <button
+                  onClick={() => goToPage(1)}
+                  disabled={currentPage === 1}
+                  style={{
+                    padding: "8px 12px",
+                    background: "white",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                    cursor: currentPage === 1 ? "not-allowed" : "pointer",
+                    opacity: currentPage === 1 ? 0.5 : 1,
+                    transition: "all 0.2s ease",
+                    fontSize: "13px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (currentPage !== 1) {
+                      e.currentTarget.style.background = "#f9fafb";
+                      e.currentTarget.style.borderColor = BASE;
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "white";
+                    e.currentTarget.style.borderColor = "#e5e7eb";
+                  }}
+                >
+                  <i className="fas fa-angle-double-left"></i>
+                </button>
+                <button
+                  onClick={() => goToPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  style={{
+                    padding: "8px 12px",
+                    background: "white",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                    cursor: currentPage === 1 ? "not-allowed" : "pointer",
+                    opacity: currentPage === 1 ? 0.5 : 1,
+                    transition: "all 0.2s ease",
+                    fontSize: "13px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (currentPage !== 1) {
+                      e.currentTarget.style.background = "#f9fafb";
+                      e.currentTarget.style.borderColor = BASE;
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "white";
+                    e.currentTarget.style.borderColor = "#e5e7eb";
+                  }}
+                >
+                  <i className="fas fa-chevron-left"></i>
+                </button>
+
+                {/* Page numbers */}
+                <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                  {(() => {
+                    const pageButtons = [];
+                    const maxVisible = 5;
+                    let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+                    let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+                    
+                    if (endPage - startPage + 1 < maxVisible) {
+                      startPage = Math.max(1, endPage - maxVisible + 1);
+                    }
+                    
+                    if (startPage > 1) {
+                      pageButtons.push(
+                        <button
+                          key={1}
+                          onClick={() => goToPage(1)}
+                          style={{
+                            padding: "6px 12px",
+                            background: "white",
+                            border: "1px solid #e5e7eb",
+                            borderRadius: "8px",
+                            cursor: "pointer",
+                            fontSize: "13px",
+                            transition: "all 0.2s ease",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = "#f9fafb";
+                            e.currentTarget.style.borderColor = BASE;
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = "white";
+                            e.currentTarget.style.borderColor = "#e5e7eb";
+                          }}
+                        >
+                          1
+                        </button>
+                      );
+                      if (startPage > 2) {
+                        pageButtons.push(
+                          <span key="dots1" style={{ padding: "6px 4px", color: "#9ca3af" }}>
+                            ...
+                          </span>
+                        );
+                      }
+                    }
+                    
+                    for (let i = startPage; i <= endPage; i++) {
+                      pageButtons.push(
+                        <button
+                          key={i}
+                          onClick={() => goToPage(i)}
+                          style={{
+                            padding: "6px 12px",
+                            background: i === currentPage ? BASE_GRADIENT : "white",
+                            color: i === currentPage ? "white" : "#374151",
+                            border: i === currentPage ? "none" : "1px solid #e5e7eb",
+                            borderRadius: "8px",
+                            cursor: "pointer",
+                            fontSize: "13px",
+                            fontWeight: i === currentPage ? "600" : "400",
+                            transition: "all 0.2s ease",
+                          }}
+                          onMouseEnter={(e) => {
+                            if (i !== currentPage) {
+                              e.currentTarget.style.background = "#f9fafb";
+                              e.currentTarget.style.borderColor = BASE;
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            if (i !== currentPage) {
+                              e.currentTarget.style.background = "white";
+                              e.currentTarget.style.borderColor = "#e5e7eb";
+                            }
+                          }}
+                        >
+                          {i}
+                        </button>
+                      );
+                    }
+                    
+                    if (endPage < totalPages) {
+                      if (endPage < totalPages - 1) {
+                        pageButtons.push(
+                          <span key="dots2" style={{ padding: "6px 4px", color: "#9ca3af" }}>
+                            ...
+                          </span>
+                        );
+                      }
+                      pageButtons.push(
+                        <button
+                          key={totalPages}
+                          onClick={() => goToPage(totalPages)}
+                          style={{
+                            padding: "6px 12px",
+                            background: "white",
+                            border: "1px solid #e5e7eb",
+                            borderRadius: "8px",
+                            cursor: "pointer",
+                            fontSize: "13px",
+                            transition: "all 0.2s ease",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = "#f9fafb";
+                            e.currentTarget.style.borderColor = BASE;
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = "white";
+                            e.currentTarget.style.borderColor = "#e5e7eb";
+                          }}
+                        >
+                          {totalPages}
+                        </button>
+                      );
+                    }
+                    
+                    return pageButtons;
+                  })()}
+                </div>
+
+                <button
+                  onClick={() => goToPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  style={{
+                    padding: "8px 12px",
+                    background: "white",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                    cursor: currentPage === totalPages ? "not-allowed" : "pointer",
+                    opacity: currentPage === totalPages ? 0.5 : 1,
+                    transition: "all 0.2s ease",
+                    fontSize: "13px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (currentPage !== totalPages) {
+                      e.currentTarget.style.background = "#f9fafb";
+                      e.currentTarget.style.borderColor = BASE;
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "white";
+                    e.currentTarget.style.borderColor = "#e5e7eb";
+                  }}
+                >
+                  <i className="fas fa-chevron-right"></i>
+                </button>
+                <button
+                  onClick={() => goToPage(totalPages)}
+                  disabled={currentPage === totalPages}
+                  style={{
+                    padding: "8px 12px",
+                    background: "white",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                    cursor: currentPage === totalPages ? "not-allowed" : "pointer",
+                    opacity: currentPage === totalPages ? 0.5 : 1,
+                    transition: "all 0.2s ease",
+                    fontSize: "13px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (currentPage !== totalPages) {
+                      e.currentTarget.style.background = "#f9fafb";
+                      e.currentTarget.style.borderColor = BASE;
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "white";
+                    e.currentTarget.style.borderColor = "#e5e7eb";
+                  }}
+                >
+                  <i className="fas fa-angle-double-right"></i>
+                </button>
+              </div>
+
+              {/* Page info */}
+              <div style={{ fontSize: "13px", color: "#6b7280" }}>
+                Showing {indexOfFirstRow + 1} to {Math.min(indexOfLastRow, filtered.length)} of {filtered.length} entries
+              </div>
+            </div>
+          )}
 
           {/* Footer */}
           <div
