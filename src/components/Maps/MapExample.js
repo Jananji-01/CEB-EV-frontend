@@ -295,12 +295,15 @@
 
 // export default MapExample;
 
+
 import React, { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-fullscreen/dist/leaflet.fullscreen.css";
 import "leaflet-fullscreen";
 import "leaflet-routing-machine";
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 
 // ✅ Add CSS to completely hide routing panel
 const hideRoutingStyles = `
@@ -330,10 +333,12 @@ function MapExample() {
   const [mapInitialized, setMapInitialized] = useState(false);
   const routeControlRef = useRef(null);
   const userMarkerRef = useRef(null);
-  const markersRef = useRef([]);
+  const markersRef = useRef({}); // Store markers by stationId for easy updates
   const legendRef = useRef(null);
+  const stompClientRef = useRef(null);
 
   const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8088";
+  const wsUrl = process.env.REACT_APP_WS_URL || "http://localhost:8088";
 
   // ✅ Inject CSS to hide routing panel on component mount
   useEffect(() => {
@@ -349,35 +354,50 @@ function MapExample() {
   // Icons for charging stations
   const iconStatus = {
     available: new L.Icon({
-      iconUrl:
-        "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
+      iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
       iconSize: [25, 41],
       iconAnchor: [12, 41],
       popupAnchor: [1, -34],
-      shadowUrl:
-        "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+      shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
       shadowSize: [41, 41],
     }),
     occupied: new L.Icon({
-      iconUrl:
-        "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png",
+      iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png",
       iconSize: [25, 41],
       iconAnchor: [12, 41],
       popupAnchor: [1, -34],
-      shadowUrl:
-        "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+      shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
       shadowSize: [41, 41],
     }),
-    unplugged: new L.Icon({
-      iconUrl:
-        "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+    charging: new L.Icon({
+      iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
       iconSize: [25, 41],
       iconAnchor: [12, 41],
       popupAnchor: [1, -34],
-      shadowUrl:
-        "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+      shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
       shadowSize: [41, 41],
     }),
+  };
+
+  // Function to update marker status in real-time
+  const updateMarkerStatus = (stationId, newStatus) => {
+    const marker = markersRef.current[stationId];
+    if (!marker || !map) return;
+
+    // Get the appropriate icon
+    const icon = iconStatus[newStatus] || iconStatus.available;
+    
+    // Update marker icon
+    marker.setIcon(icon);
+    
+    // Find the station data
+    const station = locations.find(s => s.stationId === parseInt(stationId) || s.stationId === stationId);
+    if (station) {
+      const tooltipContent = `<b>${station.stationName || "Unknown Station"}</b><br>Status: ${newStatus.toUpperCase()}<br>Charge: ${station.solarPowerAvailable || 0}%`;
+      marker.bindTooltip(tooltipContent);
+    }
+    
+    console.log(`Station ${stationId} status updated to: ${newStatus}`);
   };
 
   // Fetch charging stations from backend
@@ -398,6 +418,46 @@ function MapExample() {
 
     fetchStations();
   }, [baseUrl]);
+
+  // Initialize WebSocket connection for real-time updates
+  useEffect(() => {
+    if (!mapInitialized || locations.length === 0) return;
+
+    const stompClient = new Client({
+      webSocketFactory: () => new SockJS(`${wsUrl}/ws`),
+      debug: (str) => console.log(str),
+      reconnectDelay: 5000,
+      onConnect: () => {
+        console.log('Connected to WebSocket for real-time station updates');
+        
+        // Subscribe to station status updates
+        stompClient.subscribe('/topic/stations', (message) => {
+          const update = JSON.parse(message.body);
+          console.log('Received station update:', update);
+          
+          if (update.type === 'station_status_update') {
+            updateMarkerStatus(update.stationId, update.status);
+          }
+        });
+      },
+      onStompError: (frame) => {
+        console.error('Broker reported error: ' + frame.headers['message']);
+        console.error('Additional details: ' + frame.body);
+      },
+      onDisconnect: () => {
+        console.log('Disconnected from WebSocket');
+      }
+    });
+
+    stompClient.activate();
+    stompClientRef.current = stompClient;
+
+    return () => {
+      if (stompClientRef.current) {
+        stompClientRef.current.deactivate();
+      }
+    };
+  }, [mapInitialized, locations]);
 
   // Initialize the map - only once
   useEffect(() => {
@@ -436,19 +496,19 @@ function MapExample() {
     if (!map || !mapInitialized || locations.length === 0) return;
 
     // Clear existing markers
-    markersRef.current.forEach(marker => {
+    Object.values(markersRef.current).forEach(marker => {
       if (map.hasLayer(marker)) {
         map.removeLayer(marker);
       }
     });
-    markersRef.current = [];
+    markersRef.current = {};
 
     // Clear existing legend
     if (legendRef.current) {
       map.removeControl(legendRef.current);
     }
 
-    // Add new markers with a small delay to ensure map is ready
+    // Add new markers
     setTimeout(() => {
       try {
         locations.forEach((location) => {
@@ -457,19 +517,26 @@ function MapExample() {
             return;
           }
 
-          const icon = location.status?.toLowerCase() === "available" ? iconStatus.available :
-                      location.status?.toLowerCase() === "occupied" ? iconStatus.occupied :
-                      iconStatus.unplugged;
+          // Determine status
+          let status = location.status?.toLowerCase() || 'available';
+          
+          const icon = status === "available" ? iconStatus.available :
+                      status === "occupied" ? iconStatus.occupied :
+                      iconStatus.charging;
 
+          // Use stationName instead of name
+          const stationName = location.stationName || location.name || "Unknown Station";
+          
           const marker = L.marker([location.latitude, location.longitude], { icon })
             .bindTooltip(
-              `<b>${location.name || "Unknown"}</b><br>Status: ${location.status || "Unknown"}<br>Charge: ${
+              `<b>${stationName}</b><br>Status: ${status.toUpperCase()}<br>Charge: ${
                 location.solarPowerAvailable || 0
               }%`
             );
           
           marker.addTo(map);
-          markersRef.current.push(marker);
+          // Store marker by stationId
+          markersRef.current[location.stationId] = marker;
         });
 
         // Add Legend
@@ -481,7 +548,7 @@ function MapExample() {
               <h4 style="margin:0 0 5px 0;">Station Status</h4>
               <div><span style="display:inline-block; width:12px; height:12px; background:green; margin-right:5px;"></span> Available</div>
               <div><span style="display:inline-block; width:12px; height:12px; background:blue; margin-right:5px;"></span> Occupied</div>
-              <div><span style="display:inline-block; width:12px; height:12px; background:red; margin-right:5px;"></span> Unplugged</div>
+              <div><span style="display:inline-block; width:12px; height:12px; background:red; margin-right:5px;"></span> Charging</div>
             </div>
           `;
           return div;
@@ -528,9 +595,15 @@ function MapExample() {
               .bindPopup("<b>Your Car</b>")
               .openPopup();
 
-            // Find the nearest available charging station
+            // Find the nearest available charging station (not charging)
             const availableStations = locations.filter(
-              (station) => station.status?.toLowerCase() === "available"
+              (station) => {
+                const status = station.status?.toLowerCase();
+                // Check if station is currently charging by looking at marker icon
+                const marker = markersRef.current[station.stationId];
+                const isCharging = marker && marker.options.icon === iconStatus.charging;
+                return status === "available" && !isCharging;
+              }
             );
             
             console.log("Available Stations:", availableStations);
@@ -554,7 +627,7 @@ function MapExample() {
               map.removeControl(routeControlRef.current);
             }
 
-            // ✅ Add routing with minimal UI - only the line
+            // Add routing with minimal UI - only the line
             routeControlRef.current = L.Routing.control({
               waypoints: [
                 L.latLng(userLat, userLng),
@@ -568,7 +641,6 @@ function MapExample() {
               lineOptions: {
                 styles: [{ color: "#0c45e1", weight: 5, opacity: 0.8 }],
               },
-              // ✅ Custom formatter to prevent any text from showing
               formatter: new L.Routing.Formatter({
                 formatInstruction: function(instruction) {
                   return '';
@@ -576,7 +648,7 @@ function MapExample() {
               })
             }).addTo(map);
             
-            // ✅ Hide the panel after adding (additional safety)
+            // Hide the panel after adding
             setTimeout(() => {
               const routingContainer = document.querySelector('.leaflet-routing-container');
               if (routingContainer) {

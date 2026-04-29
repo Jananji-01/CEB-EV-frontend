@@ -17,6 +17,8 @@ export default function HeaderStats() {
   const [totalDuration, setTotalDuration] = useState("00:00");
   const [totalExpense, setTotalExpense] = useState("N/A");
 
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
   useEffect(() => {
     // ✅ admin no need to call monthly api
     if (isAdmin) return;
@@ -29,7 +31,7 @@ export default function HeaderStats() {
       return;
     }
 
-    fetch("http://localhost:8088/EV/api/consumption/monthly", {
+    fetch(`${API_BASE_URL}/api/consumption/monthly`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
