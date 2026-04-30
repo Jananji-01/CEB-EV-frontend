@@ -170,7 +170,6 @@ import React, { useState } from "react";
 // components
 import MapExample from "components/Maps/MapExample.js";
 import CardBarChart from "components/Cards/CardBarChart.js";
-import CardSocialTraffic from "components/Cards/CardSocialTraffic.js";
 import CardLineChart from "components/Cards/CardLineChart.js";
 import SessionManagement from "../../components/SessionManagement"; 
 // Corrected import path
@@ -240,6 +239,21 @@ export default function Dashboard() {
             </button>
           </div>
 
+          {/* <div className="flex flex-wrap">
+            <div className="w-full px-4 mb-12 xl:w-8/12 xl:mb-0">
+              <MapExample/>
+            </div>
+            <div className="w-full px-4 xl:w-4/12">
+              <CardBarChart />
+            </div>
+          </div> */}
+          
+          {/* <div className="flex flex-wrap mt-4">
+            <div className="w-full px-4 mb-12 xl:w-8/12 xl:mb-0">
+              <CardLineChart />
+            </div>
+          </div> */}
+          
           <div className="flex flex-wrap">
             <div className="w-full px-4 mb-12 xl:w-8/12 xl:mb-0">
               <MapExample/>
@@ -248,46 +262,30 @@ export default function Dashboard() {
               <CardBarChart />
             </div>
           </div>
+          
           <div className="flex flex-wrap mt-4">
-            <div className="w-full px-4 mb-12 xl:w-8/12 xl:mb-0">
+            {/* <div className="w-full px-4 mb-12 xl:w-8/12 xl:mb-0">
               <CardPageVisits />
             </div>
             <div className="w-full px-4 xl:w-4/12">
               <CardSocialTraffic />
-            </div>
-            <div className="w-full px-4 mb-12 xl:w-8/12 xl:mb-0">
+            </div> */}
+            {/* <div className="w-full px-4 mb-12 xl:w-8/12 xl:mb-0">
               <CardLineChart />
-            </div>
-        <div className="flex flex-wrap">
-          <div className="w-full px-4 mb-12 xl:w-8/12 xl:mb-0">
-            <MapExample/>
-          </div>
-          <div className="w-full px-4 xl:w-4/12">
-            <CardBarChart />
-          </div>
-        </div>
-        <div className="flex flex-wrap mt-4">
-          {/* <div className="w-full px-4 mb-12 xl:w-8/12 xl:mb-0">
-            <CardPageVisits />
-          </div>
-          <div className="w-full px-4 xl:w-4/12">
-            <CardSocialTraffic />
-          </div> */}
-          {/* <div className="w-full px-4 mb-12 xl:w-8/12 xl:mb-0">
-            <CardLineChart />
-          </div> */}
-          {/* ✅ NEW: Revenue & Energy Chart - Full Width */}
-          <div className="w-full px-4 mb-12 2xl:w-8/12 xl:mb-0">
+            </div> */}
+            {/* ✅ NEW: Revenue & Energy Chart - Full Width */}
+            <div className="w-full px-4 mb-12 2xl:w-8/12 xl:mb-0">
               <CardRevenueEnergy />
+            </div>
+            <div className="w-full px-4 mb-12 xl:w-6/12 xl:mb-0">
+              <CardStationStatus />
+            </div>
+            <div className="w-full px-4 mb-12 xl:w-6/12 xl:mb-0">
+              <CardChargingModes />
+            </div>
           </div>
-          <div className="w-full px-4 mb-12 xl:w-6/12 xl:mb-0">
-            <CardStationStatus />
-          </div>
-          <div className="w-full px-4 mb-12 xl:w-6/12 xl:mb-0">
-            <CardChargingModes />
-          </div>
-        </div>
-      </div>
+        </div> {/* This closes the container div */}
+      </div> {/* This closes the main background div */}
 
       {showSessions && (
         <SessionManagement onClose={handleCloseSessions} />
