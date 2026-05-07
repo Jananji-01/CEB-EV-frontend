@@ -1769,7 +1769,7 @@ export default function SmartPlugMonitor() {
   const [itemsPerPage] = useState(6); // Show 6 stations per page
 
   // Get base URL from environment or use default
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8088/EV';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   
   // Build WebSocket URL from API_BASE_URL
   const getWebSocketUrl = () => {

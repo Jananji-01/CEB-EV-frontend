@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://127.0.0.1:8088/EV/api';
+const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
 const api = axios.create({
-    baseURL: API_BASE_URL,
+    baseURL: baseUrl,
     headers: {
         'Content-Type': 'application/json',
     },

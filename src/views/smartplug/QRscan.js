@@ -9,6 +9,8 @@ function QRscan() {
   const [isRedirecting, setIsRedirecting] = useState(false);
   const qrScannerRef = useRef(null);
 
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
   useEffect(() => {
     // Initialize QR scanner
     const scanner = new Html5QrcodeScanner(
@@ -100,7 +102,7 @@ function QRscan() {
 
   const sendToBackend = async (data) => {
     try {
-      await fetch("http://127.0.0.1:8088/EV/api/qrcodes", {
+      await fetch(`${baseUrl}/api/qrcodes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

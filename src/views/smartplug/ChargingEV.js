@@ -41,7 +41,7 @@ const ChargingEV = () => {
   const stompClient = useRef(null);
   const qrScannerRef = useRef(null);
   const preparedRef = useRef(false);
-  const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8088/EV";
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
   // Connect to WebSocket when component mounts or idDevice changes
   useEffect(() => {

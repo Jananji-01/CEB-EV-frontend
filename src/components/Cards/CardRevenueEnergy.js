@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const BASE = process.env.REACT_APP_API_BASE_URL || "http://localhost:8088";
+const BASE = process.env.REACT_APP_API_BASE_URL;
 
 const authFetch = (path) =>
   fetch(`${BASE}${path}`, {

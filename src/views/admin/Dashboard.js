@@ -95,7 +95,7 @@ export default function Dashboard() {
           </div>
           
           <div className="flex flex-wrap mt-4">
-            <div className="w-full px-4 mb-12 2xl:w-1 xl:mb-0">
+            <div className="w-full px-4 mb-12 2xl:w-1/2 xl:mb-0">
               <CardRevenueEnergy />
             </div>
             <div className="w-full px-4 mb-12 xl:w-6/12 xl:mb-0">

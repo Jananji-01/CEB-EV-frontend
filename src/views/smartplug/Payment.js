@@ -31,7 +31,7 @@ const Payment = () => {
   // QR payment states
   const [showQR, setShowQR] = useState(false);
   
-  const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8088/EV";
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
   // Load transaction details from location state or fetch from API
   useEffect(() => {

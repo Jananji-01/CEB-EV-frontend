@@ -39,8 +39,8 @@ function MapExample() {
   const legendRef = useRef(null);
   const stompClientRef = useRef(null);
 
-  const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8088";
-  const wsUrl = process.env.REACT_APP_WS_URL || "http://localhost:8088";
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
+  const wsUrl = process.env.REACT_APP_WS_URL;
 
   // ✅ Inject CSS to hide routing panel on component mount
   useEffect(() => {
