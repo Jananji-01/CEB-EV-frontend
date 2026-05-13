@@ -841,7 +841,7 @@ export default function Login() {
               }}
             >
               Utility Solutions & Automation Branch, EDL.<br />
-              All Rights Reserved &nbsp; Version 1.0.0
+              All Rights Reserved &nbsp; Version 1.0.2
             </div>
 
             {/* Footer links */}
