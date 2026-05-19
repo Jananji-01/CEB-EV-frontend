@@ -103,6 +103,7 @@ export default function Sidebar() {
     { to: "/admin/smartplugs",     icon: "fas fa-network-wired", label: "Smart Plug Monitoring" },
     { to: "/admin/billing-history",icon: "fas fa-history",       label: "Billing History" },
     { to: "/admin/create-new-admin",icon: "fas fa-user-plus",       label: "Create New Admin" },
+   
   ];
 
   let links = [];
