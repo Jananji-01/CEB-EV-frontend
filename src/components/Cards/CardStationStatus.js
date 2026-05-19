@@ -92,16 +92,16 @@
 //   );
 // }
 
-
-
-
-
-
 import React, { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 const BASE = process.env.REACT_APP_API_BASE_URL || "http://localhost:8088";
-const PIE_COLORS = ["#f59e0b", "#dc2626", "#16a34a", "#1d4ed8", "#8b5cf6"];
+
+// Define colors for specific statuses
+const STATUS_COLORS = {
+  "Available": "#16a34a",  // Green
+  "Charging": "#dc2626",   // Red
+};
 
 const authFetch = (path) =>
   fetch(`${BASE}${path}`, {
@@ -144,8 +144,14 @@ export default function CardStationStatus() {
       }
       counts[status] = (counts[status] || 0) + 1;
     });
+    
     return Object.entries(counts).map(([name, value]) => ({ name, value }));
   }, [stations]);
+
+  // Function to get color based on status name
+  const getColor = (statusName) => {
+    return STATUS_COLORS[statusName];
+  };
 
   return (
     <>
@@ -157,7 +163,7 @@ export default function CardStationStatus() {
                 Station Status
               </h6>
               <h2 className="text-gray-800 text-xl font-semibold">
-                Distribution
+                Available vs Charging
               </h2>
             </div>
           </div>
@@ -168,7 +174,7 @@ export default function CardStationStatus() {
           ) : pieData.length === 0 ? (
             <div className="text-center py-12 text-gray-400">
               <i className="fas fa-charging-station text-4xl mb-3 block" />
-              <p className="text-sm">No station data available</p>
+              <p className="text-sm">No Available or Charging stations found</p>
             </div>
           ) : (
             <ResponsiveContainer width="100%" height={300}>
@@ -183,8 +189,8 @@ export default function CardStationStatus() {
                   dataKey="value"
                   label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                 >
-                  {pieData.map((_, idx) => (
-                    <Cell key={idx} fill={PIE_COLORS[idx % PIE_COLORS.length]} />
+                  {pieData.map((entry, idx) => (
+                    <Cell key={`cell-${idx}`} fill={getColor(entry.name)} />
                   ))}
                 </Pie>
                 <Tooltip formatter={(v) => [v, "Stations"]} />
