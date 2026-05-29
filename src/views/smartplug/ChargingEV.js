@@ -94,7 +94,7 @@ const ChargingEV = () => {
   };
 
   // Handle scanned QR code
-  const handleScannedQRCode = (qrData) => {
+  const handleScannedQRCode = async (qrData) => {
     try {
       // Try to parse JSON data from QR code
       const parsedData = JSON.parse(qrData);
@@ -108,6 +108,9 @@ const ChargingEV = () => {
           position: "top-right",
           autoClose: 3000,
         });
+
+        // Associate device with current EV owner
+        await sendPrepareCommand();
         
         // Auto-connect after scanning
         setTimeout(() => {
@@ -213,11 +216,6 @@ const ChargingEV = () => {
         // Load device details after successful connection
         fetchDeviceDetails();
 
-        // Send prepare command (RemoteStartTransaction) to enable the Start button
-        if (!preparedRef.current) {
-            sendPrepareCommand();
-            preparedRef.current = true;
-        }
       };
 
       stompClient.current.onStompError = (frame) => {

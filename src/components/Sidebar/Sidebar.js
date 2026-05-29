@@ -84,13 +84,13 @@ export default function Sidebar() {
   const evOwnerLinks = [
     { to: "/admin/evdashboard", icon: "fas fa-map-marked-alt", label: "Dashboard" },
     // { to: "/admin/maps",        icon: "fas fa-map-marked-alt", label: "Charging Map" },
-    { to: "/smartplug/charging",icon: "fas fa-bolt",           label: "Charging EV" },
+    { to: "/smartplug/charging",icon: "fas fa-bolt",           label: "Charging Now" },
     // { to: "/admin/payment",     icon: "fas fa-credit-card",    label: "Payments" },
   ];
 
   const solarOwnerLinks = [
     { to: "/admin/maps",          icon: "fas fa-map-marked-alt", label: "Maps" },
-    { to: "/smartplug/charging",icon: "fas fa-bolt",           label: "Charging EV" },
+    { to: "/smartplug/charging",icon: "fas fa-bolt",           label: "Charging Now" },
     // { to: "/smartplug/register",  icon: "fas fa-plug",           label: "Smart Plug Registration" },
     // { to: "/admin/payment",       icon: "fas fa-credit-card",    label: "Payments" },
   ];
