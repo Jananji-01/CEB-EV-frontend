@@ -69,7 +69,7 @@ const UserDropdown = () => {
             <img
               alt="..."
               className="w-full rounded-full align-middle border-none shadow-lg"
-              src={require("../../assets/img/ceb.png")}
+              src={require("../../assets/img/EDL.jpeg")}
             />
           </span>
         </div>

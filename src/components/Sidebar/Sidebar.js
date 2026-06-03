@@ -1,7 +1,7 @@
 /*eslint-disable*/
 import React from "react";
 import { Link } from "react-router-dom";
-import ceb from "../../assets/img/ceb.png";
+import EDL from "../../assets/img/EDL.jpeg";
 
 import NotificationDropdown from "components/Dropdowns/NotificationDropdown.js";
 import UserDropdown from "components/Dropdowns/UserDropdown.js";

@@ -20,6 +20,7 @@ import Payment from "views/admin/Payment";
 import EVOwnerDetails from "views/admin/EVOwnerDetails";
 import SolarOwnerDetails from "views/admin/SolarOwnerDetails";
 import SmartPlugMonitor from "views/admin/SmartPlugMonitor.js";
+import CreateNewAdmin from "views/admin/CreateNewAdmin.js";
 
 export default function Admin() {
   return (
@@ -33,7 +34,7 @@ export default function Admin() {
         {/* Header */}
         <HeaderStats />
         <div
-          className="px-4 md:px-10 mx-auto w-full"
+          className="w-full px-4 mx-auto md:px-10"
           style={{ marginTop: "-48px", position: "relative", zIndex: 2 }}
         >
           <Switch>
@@ -49,6 +50,7 @@ export default function Admin() {
             <Route path="/admin/evowners" exact component={EVOwnerDetails} />
             <Route path="/admin/solarowners" exact component={SolarOwnerDetails} />
             <Route path="/admin/smartplugs" exact component={SmartPlugMonitor} />
+            <Route path="/admin/create-new-admin" exact component={CreateNewAdmin} />
             <Redirect from="/admin" to="/admin/dashboard" />
           </Switch>
           <FooterAdmin />
