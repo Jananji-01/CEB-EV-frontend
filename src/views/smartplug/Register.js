@@ -360,7 +360,7 @@ const RegisterSmartPlug = () => {
                   className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white rounded-xl border-none cursor-pointer"
                   style={{ ...crimsonGrad, boxShadow: "0 4px 14px rgba(124,0,0,0.35)" }}
                 >
-                  Next: Station Assignment
+                  Next
                   <i className="fas fa-arrow-right"></i>
                 </button>
               </div>
